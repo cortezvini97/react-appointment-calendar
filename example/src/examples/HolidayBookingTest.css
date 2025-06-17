@@ -1,0 +1,125 @@
+/* Estilos para o exemplo de teste de allowHolidayBooking */
+
+.test-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.controls-section,
+.status-section,
+.instructions-section,
+.calendar-section,
+.appointments-section,
+.debug-section {
+  margin-bottom: 30px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+.control-group {
+  margin-bottom: 15px;
+}
+
+.control-group label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.control-group input[type="checkbox"] {
+  transform: scale(1.2);
+}
+
+.control-group select {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.control-group button {
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.control-group button:hover {
+  background: #0056b3;
+}
+
+.calendar-wrapper {
+  max-width: 600px;
+}
+
+.form-container {
+  padding: 20px;
+}
+
+.form-field {
+  margin-bottom: 15px;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.form-actions button {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-actions button[type="submit"] {
+  background: #007bff;
+  color: white;
+  border: none;
+}
+
+.appointment-description {
+  font-size: 0.9em;
+  color: #666;
+  margin-top: 5px;
+}
+
+.debug-section pre {
+  background: #f0f0f0;
+  padding: 10px;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.instructions-section ol {
+  line-height: 1.6;
+}
+
+.status-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.status-section li {
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}

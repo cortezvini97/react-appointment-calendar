@@ -1,0 +1,50 @@
+.christian-holidays-example {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.controls {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.controls label {
+    display: block;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.controls input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.holidays-info {
+    background: #e8f4f8;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.holidays-info ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.holidays-info li {
+    padding: 5px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.holidays-info li:last-child {
+    border-bottom: none;
+}
+
+.calendar-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}

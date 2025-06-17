@@ -1,0 +1,40 @@
+/* Layout.css */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  margin-left: 300px; /* Largura da sidebar */
+  transition: margin-left 0.3s ease;
+}
+
+/* Responsivo para quando a sidebar está colapsada */
+.main-content.sidebar-collapsed {
+  margin-left: 60px;
+}
+
+/* Responsivo para telas menores */
+@media (max-width: 1200px) {
+  .main-content {
+    margin-left: 280px;
+  }
+  
+  .main-content.sidebar-collapsed {
+    margin-left: 60px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 10px;
+  }
+  
+  .main-content.sidebar-collapsed {
+    margin-left: 0;
+  }
+}

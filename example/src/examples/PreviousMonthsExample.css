@@ -1,0 +1,172 @@
+/* Estilos para o exemplo de teste de previousMonths */
+
+.test-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.controls-section,
+.status-section,
+.instructions-section,
+.calendar-section,
+.appointments-section,
+.debug-section {
+  margin-bottom: 30px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+.control-group {
+  margin-bottom: 15px;
+}
+
+.control-group label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.control-group input[type="checkbox"] {
+  transform: scale(1.2);
+}
+
+.control-group button {
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.control-group button:hover {
+  background: #0056b3;
+}
+
+.status-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.status-section li {
+  margin-bottom: 8px;
+  padding: 5px 0;
+}
+
+.instructions-section ol {
+  padding-left: 20px;
+}
+
+.instructions-section li {
+  margin-bottom: 10px;
+}
+
+.calendar-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.appointments-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.appointments-section li {
+  background: white;
+  margin-bottom: 10px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.appointment-description {
+  color: #666;
+  font-style: italic;
+  margin-top: 5px;
+}
+
+.debug-section pre {
+  background: #2d3748;
+  color: #e2e8f0;
+  padding: 15px;
+  border-radius: 5px;
+  overflow-x: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+}
+
+.form-container {
+  padding: 20px;
+}
+
+.form-field {
+  margin-bottom: 15px;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.form-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.form-actions button[type="button"] {
+  background: #6c757d;
+  color: white;
+}
+
+.form-actions button[type="submit"] {
+  background: #28a745;
+  color: white;
+}
+
+.form-actions button:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .test-container {
+    padding: 10px;
+  }
+  
+  .controls-section,
+  .status-section,
+  .instructions-section,
+  .calendar-section,
+  .appointments-section,
+  .debug-section {
+    padding: 15px;
+  }
+  
+  .control-group label {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "name": "react-appointment-calendar",
+  "version": "1.0.0",
+  "description": "Uma biblioteca de calendário para agendamento de eventos em React.js",  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "style": "dist/Calendar.css",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "react",
+    "calendar",
+    "scheduler",
+    "appointment",
+    "booking"
+  ],
+  "author": "Vinicius Cortez",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "rollup": "^3.0.0",
+    "rollup-plugin-postcss": "^4.0.0",
+    "tslib": "^2.8.1",
+    "typescript": "^5.0.0"
+  }
+}
