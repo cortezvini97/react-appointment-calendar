@@ -35,6 +35,7 @@ export const Calendar: React.FC<CalendarProps> = ({
   highlightEvents = true,
   highlightToday = true,
   showAvailableSlots = true,
+  showExistingEvents = true,
   workingHours = null,
   workingHoursCurrentDayOnly = false,
   onDayClick,
@@ -332,6 +333,7 @@ export const Calendar: React.FC<CalendarProps> = ({
           appointments={modalAppointments}
           onSubmit={handleFormSubmit}
           renderForm={renderForm}
+          showExistingEvents={showExistingEvents}
         />
       )}
 

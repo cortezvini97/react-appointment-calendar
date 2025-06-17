@@ -94,11 +94,16 @@ export interface CalendarProps {  /**
    * Destacar dia atual (padrão: true)
    */
   highlightToday?: boolean;
-  
-  /**
+    /**
    * Mostrar vagas disponíveis no tooltip (padrão: true)
    */
   showAvailableSlots?: boolean;
+  
+  /**
+   * Exibir eventos existentes no modal (padrão: true)
+   * Se false, o modal não mostrará a seção de "Agendamentos existentes"
+   */
+  showExistingEvents?: boolean;
     /**
    * Horário de funcionamento (formato: "HH:mm-HH:mm", ex: "08:00-18:00")
    * Quando definido, agendamentos só podem ser feitos dentro deste horário
@@ -142,4 +147,5 @@ export interface ModalProps {
   appointments: Appointment[];
   onSubmit: (data: any, event?: React.FormEvent) => void;
   renderForm?: (date: Date, onSubmit: (data: any, event?: React.FormEvent) => void, onCancel: () => void) => React.ReactNode;
+  showExistingEvents?: boolean;
 }

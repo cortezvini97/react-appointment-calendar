@@ -17,6 +17,7 @@ import DisabledDatesExample from "./examples/DisabledDatesExample";
 import DisabledDatesLabelTest from "./examples/DisabledDatesLabelTest";
 import WorkingHoursExample from "./examples/WorkingHoursExample";
 import PreviousMonthsExample from "./examples/PreviousMonthsExample";
+import ShowExistingEventsExample from "./examples/ShowExistingEventsExample";
 import CorrectionsDemoExample from "./examples/CorrectionsDemoExample";
 
 import './index.css';
@@ -40,6 +41,7 @@ const App = () => {
           <Route path="disabled-dates" element={<DisabledDatesExample />} />          <Route path="disabled-dates-label" element={<DisabledDatesLabelTest />} />
           <Route path="working-hours" element={<WorkingHoursExample />} />
           <Route path="previous-months" element={<PreviousMonthsExample />} />
+          <Route path="show-existing-events" element={<ShowExistingEventsExample />} />
           <Route path="corrections-demo" element={<CorrectionsDemoExample />} />
         </Route>
       </Routes>

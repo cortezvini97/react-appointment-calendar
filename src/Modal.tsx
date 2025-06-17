@@ -66,7 +66,8 @@ export const Modal: React.FC<ModalProps> = ({
   date,
   appointments,
   onSubmit,
-  renderForm
+  renderForm,
+  showExistingEvents = true
 }) => {
   React.useEffect(() => {
     if (isOpen) {
@@ -125,10 +126,8 @@ export const Modal: React.FC<ModalProps> = ({
           >
             ×
           </button>
-        </div>
-
-        <div className="calendar-modal-body">
-          {appointments.length > 0 && (
+        </div>        <div className="calendar-modal-body">
+          {showExistingEvents && appointments.length > 0 && (
             <div className="calendar-appointments-list">
               <h3>Agendamentos existentes:</h3>
               <ul>

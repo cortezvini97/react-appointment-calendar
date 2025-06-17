@@ -79,11 +79,16 @@ const examples: ExampleItem[] = [
     name: 'Horário de Funcionamento',
     description: 'Exemplo com horários de trabalho',
     category: 'Configurações'
-  },
-  {
+  },  {
     path: '/previous-months',
     name: 'Previous Months',
     description: 'Teste de navegação para meses anteriores',
+    category: 'Configurações'
+  },
+  {
+    path: '/show-existing-events',
+    name: 'Controle de Eventos Existentes',
+    description: 'Exemplo de controle para exibir/ocultar eventos existentes no modal',
     category: 'Configurações'
   },
   {

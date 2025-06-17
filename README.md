@@ -74,6 +74,7 @@ export default App;
 | `highlightEvents` | `boolean` | `true` | Destacar dias com eventos/agendamentos |
 | `highlightToday` | `boolean` | `true` | Destacar o dia atual com cor especial |
 | `showAvailableSlots` | `boolean` | `true` | Mostrar vagas disponíveis no tooltip |
+| `showExistingEvents` | `boolean` | `true` | Exibir eventos existentes no modal |
 | `workingHours` | `string \| null` | `null` | Horário de funcionamento (formato: "HH:mm-HH:mm") |
 | `onDayClick` | `(date: Date, appointments: Appointment[]) => void` | - | Callback ao clicar em um dia |
 | `onSubmit` | `(data: any, date: Date) => void` | - | Callback ao submeter o formulário |
@@ -242,6 +243,33 @@ function SimpleCalendar() {
 }
 ```
 
+### Controle de Exibição de Eventos Existentes
+
+```tsx
+function CalendarWithEventControl() {
+  const [showExistingEvents, setShowExistingEvents] = useState(true);
+  
+  return (
+    <div>
+      <label>
+        <input
+          type="checkbox"
+          checked={showExistingEvents}
+          onChange={(e) => setShowExistingEvents(e.target.checked)}
+        />
+        Mostrar eventos existentes no modal
+      </label>
+      
+      <Calendar
+        appointments={appointments}
+        showExistingEvents={showExistingEvents}  // Controlar exibição de eventos
+        onSubmit={handleSubmit}
+      />
+    </div>
+  );
+}
+```
+
 ### Calendário com Horário de Funcionamento
 
 ```tsx
@@ -360,6 +388,7 @@ interface CalendarProps {
   highlightEvents?: boolean;
   highlightToday?: boolean;
   showAvailableSlots?: boolean;
+  showExistingEvents?: boolean;
   workingHours?: string | null;
   onDayClick?: (date: Date, appointments: Appointment[]) => void;
   onSubmit?: (data: any, date: Date) => void;
