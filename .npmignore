@@ -1,5 +1,6 @@
 # Development files
 example/
+docs/
 .storybook/
 
 # Source files (apenas dist/ deve ser incluído)

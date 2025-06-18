@@ -1,0 +1,401 @@
+/* Theme Colors CSS - Cores dinâmicas definidas via JavaScript */
+
+.calendar-themed {
+  /* Variáveis CSS que serão aplicadas dinamicamente via JavaScript */
+  --today-circle-color: #3B82F6;
+  --border-color: #D1D5DB;
+  --day-hover-bg: #F3F4F6;
+}
+
+/* Horário de funcionamento para tema customizado - posicionado acima do header */
+.calendar-themed .calendar-working-hours-info {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 0;
+  border-bottom: none;
+  padding: 10px 1.5rem;
+  margin: 0;
+  font-size: 13px;
+  color: #856404;
+  text-align: center;
+  font-weight: 500;
+}
+
+.calendar-themed .calendar-working-hours-info.closed {
+  background: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+/* Container principal - SEM PADDING no tema */
+.calendar-themed.calendar-container {
+  border: 1px solid var(--border-color);
+  border-radius: 0;
+  box-shadow: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding: 0; /* Remove o padding padrão */
+}
+
+/* Cabeçalho principal - replicando a imagem - MAIOR ESPECIFICIDADE */
+.calendar-themed.calendar-container .calendar-header {
+  background: #7C3AED; /* Será sobrescrito via inline style */
+  color: white; /* Será sobrescrito via inline style */
+  padding: 1rem 1.5rem;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Título do mês/ano */
+.calendar-themed.calendar-container .calendar-title {
+  color: white; /* Será sobrescrito via inline style */
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+  text-shadow: none;
+}
+
+/* Botões de navegação - estilo setas simples */
+.calendar-themed .calendar-nav-button {
+  background: transparent;
+  border: none;
+  color: white; /* Será sobrescrito via inline style */
+  font-size: 1.5rem;
+  font-weight: 300;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-themed .calendar-nav-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: none;
+  box-shadow: none;
+}
+
+.calendar-themed .calendar-nav-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: transparent;
+}
+
+/* Dias da semana - corrigindo estrutura para replicar a imagem */
+.calendar-themed.calendar-container .calendar-weekdays {
+  background: #5B21B6; /* Será sobrescrito via inline style */
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+  margin: 0;
+  border-radius: 0;
+}
+
+.calendar-themed.calendar-container .calendar-weekday {
+  background: #5B21B6; /* Será sobrescrito via inline style */
+  color: white; /* Será sobrescrito via inline style */
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  border: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.calendar-themed .calendar-weekday:last-child {
+  border-right: none;
+}
+
+/* Grid do calendário - ajustando para remover gaps */
+.calendar-themed .calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* Dias do calendário - estilo limpo igual à imagem */
+.calendar-themed .calendar-day {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-top: none;
+  border-left: none;
+  padding: 1rem 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  min-height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.calendar-themed .calendar-day:nth-child(7n) {
+  border-right: none;
+}
+
+.calendar-themed .calendar-day:hover:not(.calendar-day-disabled) {
+  background: #f8f9fa;
+  transform: scale(1.02);
+}
+
+.calendar-themed .calendar-day:active:not(.calendar-day-disabled) {
+  transform: scale(0.98);
+}
+
+/* Números dos dias */
+.calendar-themed .calendar-day-number {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #374151;
+  line-height: 1;
+}
+
+/* Dia atual com fundo amarelo - estilo padrão (todayCircleStyle=false) */
+.calendar-themed .calendar-day-today {
+  background: #FEF3C7; /* Fundo amarelo igual ao tema padrão */
+  border: 1px solid #F59E0B;
+  color: #92400E;
+  font-weight: 600;
+}
+
+.calendar-themed .calendar-day-today .calendar-day-number {
+  background: transparent;
+  color: #92400E; /* Cor do texto igual ao tema padrão */
+  font-weight: 600;
+}
+
+/* Dia atual com círculo azul - estilo alternativo (todayCircleStyle=true) */
+.calendar-themed .calendar-day-today-circle {
+  background: transparent;
+}
+
+.calendar-themed .calendar-day-today-circle .calendar-day-number {
+  background: transparent;
+  color: var(--today-circle-color);
+  font-weight: 600;
+  position: relative;
+}
+
+.calendar-themed .calendar-day-today-circle .calendar-day-number::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--today-circle-color);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Dias de outros meses - igual ao tema padrão */
+.calendar-themed .calendar-day-other-month {
+  background: #f8f9fa;
+}
+
+.calendar-themed .calendar-day-other-month .calendar-day-number {
+  color: #adb5bd;
+}
+
+/* Dias desabilitados - igual ao tema padrão */
+.calendar-themed .calendar-day-disabled {
+  background: #e9ecef;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.calendar-themed .calendar-day-disabled .calendar-day-number {
+  color: #6c757d;
+}
+
+/* Dias com agendamentos - igual ao tema padrão */
+.calendar-themed .calendar-day-has-appointments {
+  background: #e3f2fd;
+  border-left: 4px solid #2196f3;
+}
+
+.calendar-themed .calendar-day-has-appointments:hover:not(.calendar-day-disabled) {
+  background: #bbdefb;
+}
+
+/* Feriados - exatamente igual ao tema padrão */
+.calendar-themed .calendar-day-holiday {
+  background: #ffebee;
+  border-left: 4px solid #f44336;
+}
+
+.calendar-themed .calendar-day-holiday:hover:not(.calendar-day-disabled) {
+  background: #ffcdd2;
+}
+
+/* Datas desabilitadas (disabled dates) - igual ao tema padrão */
+.calendar-themed .calendar-day-disabled-date {
+  background: #f3e5f5;
+  border-left: 4px solid #9c27b0;
+}
+
+.calendar-themed .calendar-day-disabled-date:hover:not(.calendar-day-disabled) {
+  background: #e1bee7;
+}
+
+/* Destacar domingos - igual ao tema padrão */
+.calendar-themed .calendar-day-sunday .calendar-day-number {
+  color: #dc3545 !important;
+  font-weight: 600;
+}
+
+.calendar-themed .calendar-day-sunday.calendar-day-disabled .calendar-day-number {
+  color: #dc3545 !important;
+  font-weight: 600;
+}
+
+/* Indicadores de agendamentos - exatamente igual ao tema padrão */
+.calendar-themed .calendar-appointments-indicator {
+  position: absolute;
+  bottom: 0.25rem;
+  right: 0.25rem;
+  background: #2196f3;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.calendar-themed .calendar-appointments-count {
+  line-height: 1;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .calendar-themed .calendar-header {
+    padding: 0.75rem 1rem;
+  }
+  
+  .calendar-themed .calendar-title {
+    font-size: 1rem;
+  }
+  
+  .calendar-themed .calendar-nav-button {
+    width: 35px;
+    height: 35px;
+    font-size: 1.3rem;
+  }
+  
+  .calendar-themed .calendar-day {
+    min-height: 50px;
+    padding: 0.75rem 0.25rem;
+  }
+  
+  .calendar-themed .calendar-weekday {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.7rem;
+  }
+  
+  .calendar-themed .calendar-appointments-indicator {
+    width: 16px;
+    height: 16px;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-themed .calendar-header {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .calendar-themed .calendar-title {
+    font-size: 0.9rem;
+  }
+  
+  .calendar-themed .calendar-nav-button {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+  
+  .calendar-themed .calendar-day {
+    min-height: 40px;
+  }
+  
+  .calendar-themed .calendar-weekday {
+    padding: 0.4rem 0.2rem;
+    font-size: 0.75rem;
+  }
+  
+  .calendar-themed .calendar-appointments-indicator {
+    width: 14px;
+    height: 14px;
+    font-size: 0.65rem;
+    bottom: 0.15rem;
+    right: 0.15rem;
+  }
+}
+
+/* Dias passados - igual ao tema padrão */
+.calendar-themed .calendar-day-past {
+  background: #e9ecef;
+  cursor: not-allowed;
+}
+
+.calendar-themed .calendar-day-past .calendar-day-number {
+  color: #6c757d;
+  text-decoration: line-through;
+}
+
+/* Indicador de horário de funcionamento - igual ao tema padrão */
+.calendar-themed .calendar-outside-working-hours {
+  position: relative;
+}
+
+.calendar-themed .calendar-outside-working-hours::after {
+  content: '🕒';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.calendar-themed .calendar-outside-working-hours:hover::after {
+  opacity: 1;
+}
+
+/* Horário de funcionamento - igual ao tema padrão */
+.calendar-themed .calendar-working-hours-info {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: #856404;
+  text-align: center;
+}
+
+.calendar-themed .calendar-working-hours-info.closed {
+  background: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}

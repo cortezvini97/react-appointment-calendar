@@ -1,5 +1,11 @@
 import * as React from 'react';
 
+export interface ThemeColor {
+  color_header_top?: string | null;
+  color_header_bottom?: string | null;
+  color_font_header?: string | null;
+}
+
 export interface Appointment {
   id: string;
   title: string;
@@ -141,7 +147,7 @@ export interface CalendarProps {  /**
    * Renderizar formulário customizado no modal
    */
   renderForm?: (date: Date, onSubmit: (data: any, event?: React.FormEvent) => void, onCancel: () => void) => React.ReactNode;
-    /**
+  /**
    * Estilo customizado do calendário
    */
   style?: any;
@@ -150,6 +156,11 @@ export interface CalendarProps {  /**
    * Classe CSS customizada
    */
   className?: string;
+  
+  /**
+   * Cores do tema do calendário (padrão: tema claro)
+   */
+  themeColors?: ThemeColor;
 }
 
 export interface ModalProps {

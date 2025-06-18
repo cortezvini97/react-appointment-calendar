@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CalendarProps, CalendarDay, Appointment } from './types';
+import { CalendarProps, CalendarDay, Appointment, ThemeColor } from './types';
 import { Modal } from './Modal';
 import HolidayCalculator from './HolidayCalculator';
 import {
@@ -19,6 +19,7 @@ import {
   convertChristianHolidaysToCalendarFormat,
 } from './utils';
 import './Calendar.css';
+import './CalendarTheme.css';
 
 export const Calendar: React.FC<CalendarProps> = ({
   currentDate = new Date(),
@@ -39,11 +40,11 @@ export const Calendar: React.FC<CalendarProps> = ({
   showExistingEvents = true,
   workingHours = null,
   workingHoursCurrentDayOnly = false,
-  onDayClick,
-  onSubmit,
+  onDayClick,  onSubmit,
   renderForm,
   style,
   className,
+  themeColors = { color_header_top: null, color_header_bottom: null, color_font_header: null },
 }) => {// Processa currentDate: converte string para Date se necessário
   // Suporta formatos como "2025-06-01" ou datas criadas com createDate()
   const processedCurrentDate = React.useMemo(() => {
@@ -65,9 +66,51 @@ export const Calendar: React.FC<CalendarProps> = ({
   const [modalOpen, setModalOpen] = React.useState(false);
   const [modalDate, setModalDate] = React.useState<Date | null>(null);
   const [modalAppointments, setModalAppointments] = React.useState<Appointment[]>([]);
-  const [currentTime, setCurrentTime] = React.useState(new Date());
-  const [closedModalOpen, setClosedModalOpen] = React.useState(false);
+  const [currentTime, setCurrentTime] = React.useState(new Date());  const [closedModalOpen, setClosedModalOpen] = React.useState(false);
   const [closedModalMessage, setClosedModalMessage] = React.useState('');
+  // Verificar se deve aplicar tema customizado
+  const isThemed = themeColors?.color_header_top || themeColors?.color_header_bottom || themeColors?.color_font_header;  // Funções para obter estilos inline dos elementos
+  const getHeaderStyles = () => {
+    if (!isThemed) return {};
+    
+    return {
+      backgroundColor: themeColors?.color_header_top || '#7C3AED',
+      color: themeColors?.color_font_header || 'white',
+    };
+  };
+
+  const getWeekdaysStyles = () => {
+    if (!isThemed) return {};
+    
+    return {
+      backgroundColor: themeColors?.color_header_bottom || '#5B21B6',
+    };
+  };
+
+  const getWeekdayStyles = () => {
+    if (!isThemed) return {};
+    
+    return {
+      backgroundColor: themeColors?.color_header_bottom || '#5B21B6',
+      color: themeColors?.color_font_header || 'white',
+    };
+  };
+
+  const getNavButtonStyles = () => {
+    if (!isThemed) return {};
+    
+    return {
+      color: themeColors?.color_font_header || 'white',
+    };
+  };
+
+  const getTitleStyles = () => {
+    if (!isThemed) return {};
+    
+    return {
+      color: themeColors?.color_font_header || 'white',
+    };
+  };
   
   // Calcular feriados cristãos se habilitado
   const christianHolidays = React.useMemo(() => {
@@ -286,24 +329,31 @@ export const Calendar: React.FC<CalendarProps> = ({
     return tooltip;
   };
 
-  const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
-  return (    <div 
-      className={`calendar-container ${className || ''}`} 
+  const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];  return (    <div 
+      className={`calendar-container ${isThemed ? 'calendar-themed' : ''} ${className || ''}`} 
       {...(style && { style })}
     >
-      <div className="calendar-header">
+      {/* Horário de funcionamento acima do header (apenas para tema customizado) */}
+      {isThemed && workingHoursStatus && !workingHoursCurrentDayOnly && (
+        <div className={`calendar-working-hours-info ${workingHoursStatus.isOpen ? '' : 'closed'}`}>
+          {workingHoursStatus.message}
+        </div>
+      )}
+
+      <div className="calendar-header" style={getHeaderStyles()}>
         {shouldShowPreviousButton() && (
           <button
             className="calendar-nav-button"
             onClick={handlePreviousMonth}
             aria-label="Mês anterior"
             disabled={isPreviousMonthDisabled()}
+            style={getNavButtonStyles()}
           >
             ‹
           </button>
         )}
         
-        <h2 className="calendar-title">
+        <h2 className="calendar-title" style={getTitleStyles()}>
           {getMonthName(selectedDate)} {getYear(selectedDate)}
         </h2>
         
@@ -311,18 +361,20 @@ export const Calendar: React.FC<CalendarProps> = ({
           className="calendar-nav-button"
           onClick={handleNextMonth}
           aria-label="Próximo mês"
+          style={getNavButtonStyles()}
         >
           ›
         </button>
-      </div>{workingHoursStatus && !workingHoursCurrentDayOnly && (
+      </div>
+
+      {/* Horário de funcionamento entre header e semanas (apenas para tema padrão) */}
+      {!isThemed && workingHoursStatus && !workingHoursCurrentDayOnly && (
         <div className={`calendar-working-hours-info ${workingHoursStatus.isOpen ? '' : 'closed'}`}>
           {workingHoursStatus.message}
         </div>
-      )}
-
-      <div className="calendar-weekdays">
+      )}<div className="calendar-weekdays" style={getWeekdaysStyles()}>
         {weekDays.map((day) => (
-          <div key={day} className="calendar-weekday">
+          <div key={day} className="calendar-weekday" style={getWeekdayStyles()}>
             {day}
           </div>
         ))}

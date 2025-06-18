@@ -4,11 +4,11 @@ Uma biblioteca de calendário para agendamento em React.js com funcionalidades a
 
 ## 📚 Documentação Completa
 
-👉 **[Acesse a documentação completa](./docs/README.md)** com exemplos interativos, guias de instalação e referência da API.
+👉 **[Acesse a documentação completa](https://github.com/cortezvini97/react-appointment-calendar/blob/master/docs/README.md)** com exemplos interativos, guias de instalação e referência da API.
 
-- 📖 [Guia de Instalação](./docs/installation.md)
-- 🎯 [Exemplo Básico](./docs/examples/basic-example.md)
-- 📚 [Referência da API](./docs/api-reference.md)
+- 📖 [Guia de Instalação](https://github.com/cortezvini97/react-appointment-calendar/blob/master/docs/installation.md)
+- 🎯 [Exemplo Básico](https://github.com/cortezvini97/react-appointment-calendar/blob/master/docs/examples/basic-example.md)
+- 📚 [Referência da API](https://github.com/cortezvini97/react-appointment-calendar/blob/master/docs/api-reference.md)
 - 🌐 [Exemplos Online](http://localhost:3000) (após rodar o projeto)
 
 ## ✨ Funcionalidades
