@@ -136,6 +136,41 @@
   background: #ffeaa7;
 }
 
+/* Estilo de círculo para o dia atual */
+.calendar-day-today-circle {
+  position: relative;
+  font-weight: 600;
+}
+
+.calendar-day-today-circle .calendar-day-number {
+  position: relative;
+  z-index: 2;
+  color: #007bff;
+  font-weight: 700;
+}
+
+.calendar-day-today-circle .calendar-day-number::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border: 2px solid #007bff;
+  border-radius: 50%;
+  z-index: 1;
+  background: transparent;
+}
+
+.calendar-day-today-circle:hover:not(.calendar-day-disabled) {
+  background: #f8f9fa;
+}
+
+.calendar-day-today-circle:hover:not(.calendar-day-disabled) .calendar-day-number::before {
+  background: rgba(0, 123, 255, 0.1);
+}
+
 /* Destacar domingos com números vermelhos */
 .calendar-day-sunday .calendar-day-number {
   color: #dc3545 !important;

@@ -19,6 +19,7 @@ import WorkingHoursExample from "./examples/WorkingHoursExample";
 import PreviousMonthsExample from "./examples/PreviousMonthsExample";
 import ShowExistingEventsExample from "./examples/ShowExistingEventsExample";
 import PreviousButtonControlExample from "./examples/PreviousButtonControlExample";
+import TodayStyleExample from "./examples/TodayStyleExample";
 import CorrectionsDemoExample from "./examples/CorrectionsDemoExample";
 
 import './index.css';
@@ -39,10 +40,10 @@ const App = () => {
           <Route path="movable-holidays" element={<MovableHolidaysExample />} />
           <Route path="holiday-booking-test" element={<HolidayBookingTestExample />} />
           <Route path="simple-holiday-test" element={<SimpleHolidayTestPage />} />
-          <Route path="disabled-dates" element={<DisabledDatesExample />} />          <Route path="disabled-dates-label" element={<DisabledDatesLabelTest />} />          <Route path="working-hours" element={<WorkingHoursExample />} />
-          <Route path="previous-months" element={<PreviousMonthsExample />} />
+          <Route path="disabled-dates" element={<DisabledDatesExample />} />          <Route path="disabled-dates-label" element={<DisabledDatesLabelTest />} />          <Route path="working-hours" element={<WorkingHoursExample />} />          <Route path="previous-months" element={<PreviousMonthsExample />} />
           <Route path="show-existing-events" element={<ShowExistingEventsExample />} />
           <Route path="previous-button-control" element={<PreviousButtonControlExample />} />
+          <Route path="today-style" element={<TodayStyleExample />} />
           <Route path="corrections-demo" element={<CorrectionsDemoExample />} />
         </Route>
       </Routes>

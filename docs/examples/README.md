@@ -35,6 +35,7 @@ Lista completa de todos os exemplos disponíveis, organizados por categoria e n�
 
 | Exemplo | Descrição | Nível | Link Demo |
 |---------|-----------|-------|-----------|
+| [**Estilos do Dia Atual**](./today-style.md) | Diferentes estilos para destacar hoje | 🟡 Intermediário | [Demo](http://localhost:3000/today-style) |
 | [**Showcase Completo**](./feature-showcase.md) | Todas as funcionalidades | 🔴 Avançado | [Demo](http://localhost:3000/feature-showcase) |
 | [**Múltiplas Features**](./example-with-features.md) | Combinação de recursos | 🔴 Avançado | [Demo](http://localhost:3000/example-with-features) |
 

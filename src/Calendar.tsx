@@ -31,10 +31,10 @@ export const Calendar: React.FC<CalendarProps> = ({
   previousMonths = true,
   showDisabledPreviousButton = false,
   disabledDates = null,
-  enableSaturday = false,
-  enableSunday = false,
+  enableSaturday = false,  enableSunday = false,
   highlightEvents = true,
   highlightToday = true,
+  todayCircleStyle = false,
   showAvailableSlots = true,
   showExistingEvents = true,
   workingHours = null,
@@ -224,10 +224,13 @@ export const Calendar: React.FC<CalendarProps> = ({
     if (day.isDisabled) {
       classes.push('calendar-day-disabled');
     }
-    
-    // Destacar dia atual se habilitado
+      // Destacar dia atual se habilitado
     if (highlightToday && isToday(day.date)) {
-      classes.push('calendar-day-today');
+      if (todayCircleStyle) {
+        classes.push('calendar-day-today-circle');
+      } else {
+        classes.push('calendar-day-today');
+      }
     }
     
     // Verificar se é domingo para aplicar estilo especial

@@ -92,11 +92,16 @@ const examples: ExampleItem[] = [
     name: 'Controle de Eventos Existentes',
     description: 'Exemplo de controle para exibir/ocultar eventos existentes no modal',
     category: 'Configurações'
-  },
-  {
+  },  {
     path: '/previous-button-control',
     name: 'Controle Botão Anterior',
     description: 'Exemplo de controle de exibição do botão de mês anterior',
+    category: 'Configurações'
+  },
+  {
+    path: '/today-style',
+    name: 'Estilos do Dia Atual',
+    description: 'Exemplo de diferentes estilos para destacar o dia atual',
     category: 'Configurações'
   },
   {

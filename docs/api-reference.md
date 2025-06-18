@@ -40,6 +40,7 @@ Documentação completa de todas as propriedades, interfaces e callbacks dispon�
 |-------------|------|---------|-----------|
 | `highlightEvents` | `boolean` | `true` | Destaca dias com eventos |
 | `highlightToday` | `boolean` | `true` | Destaca o dia atual |
+| `todayCircleStyle` | `boolean` | `false` | Estilo do destaque: false=fundo amarelo, true=círculo azul |
 | `showAvailableSlots` | `boolean` | `true` | Mostra vagas disponíveis no tooltip |
 | `showExistingEvents` | `boolean` | `true` | Exibe eventos existentes no modal |
 
@@ -163,6 +164,8 @@ interface CalendarDay {
 <Calendar
   appointments={appointments}
   highlightEvents={true}
+  highlightToday={true}
+  todayCircleStyle={true}  // Círculo azul em vez de fundo amarelo
   showExistingEvents={false}
   className="my-custom-calendar"
   style={{ border: '1px solid #ccc' }}

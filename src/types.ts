@@ -95,11 +95,17 @@ export interface CalendarProps {  /**
    * Destacar eventos (padrão: true)
    */
   highlightEvents?: boolean;
-  
-  /**
+    /**
    * Destacar dia atual (padrão: true)
    */
   highlightToday?: boolean;
+  
+  /**
+   * Estilo do destaque do dia atual (padrão: false)
+   * - false: Estilo padrão com fundo amarelo
+   * - true: Estilo de círculo ao redor do número
+   */
+  todayCircleStyle?: boolean;
     /**
    * Mostrar vagas disponíveis no tooltip (padrão: true)
    */
