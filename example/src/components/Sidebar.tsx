@@ -82,6 +82,12 @@ const examples: ExampleItem[] = [
     category: 'Configurações'
   },  
   {
+    path: '/args-example',
+    name: 'Args para Formulário',
+    description: 'Exemplo passando argumentos para formulário customizado',
+    category: 'Avançado'
+  },
+  {
     path: '/previous-months',
     name: 'Previous Months',
     description: 'Teste de navegação para meses anteriores',

@@ -141,12 +141,18 @@ export interface CalendarProps {  /**
   onDayClick?: (date: Date, appointments: Appointment[]) => void;
     /**
    * Callback ao submeter o formulário do modal
-   */
+   */  
   onSubmit?: (data: any, date: Date, event?: React.FormEvent) => void;
     /**
    * Renderizar formulário customizado no modal
    */
-  renderForm?: (date: Date, onSubmit: (data: any, event?: React.FormEvent) => void, onCancel: () => void) => React.ReactNode;
+  renderForm?: (date: Date, onSubmit: (data: any, event?: React.FormEvent) => void, onCancel: () => void, args?: any) => React.ReactNode;
+  
+  /**
+   * Argumentos adicionais para passar ao formulário customizado
+   */
+  args?: any;
+  
   /**
    * Estilo customizado do calendário
    */
@@ -169,6 +175,7 @@ export interface ModalProps {
   date: Date;
   appointments: Appointment[];
   onSubmit: (data: any, event?: React.FormEvent) => void;
-  renderForm?: (date: Date, onSubmit: (data: any, event?: React.FormEvent) => void, onCancel: () => void) => React.ReactNode;
+  renderForm?: (date: Date, onSubmit: (data: any, event?: React.FormEvent) => void, onCancel: () => void, args?: any) => React.ReactNode;
   showExistingEvents?: boolean;
+  args?: any;
 }

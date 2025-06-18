@@ -42,6 +42,7 @@ export const Calendar: React.FC<CalendarProps> = ({
   workingHoursCurrentDayOnly = false,
   onDayClick,  onSubmit,
   renderForm,
+  args,
   style,
   className,
   themeColors = { color_header_top: null, color_header_bottom: null, color_font_header: null },
@@ -409,6 +410,7 @@ export const Calendar: React.FC<CalendarProps> = ({
           onSubmit={handleFormSubmit}
           renderForm={renderForm}
           showExistingEvents={showExistingEvents}
+          args={args}
         />
       )}
 

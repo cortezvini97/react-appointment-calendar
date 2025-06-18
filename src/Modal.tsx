@@ -67,7 +67,8 @@ export const Modal: React.FC<ModalProps> = ({
   appointments,
   onSubmit,
   renderForm,
-  showExistingEvents = true
+  showExistingEvents = true,
+  args
 }) => {
   React.useEffect(() => {
     if (isOpen) {
@@ -141,12 +142,10 @@ export const Modal: React.FC<ModalProps> = ({
                 ))}
               </ul>
             </div>
-          )}
-
-          <div className="calendar-new-appointment">
+          )}          <div className="calendar-new-appointment">
             <h3>Novo Agendamento:</h3>
             {renderForm ? (
-              renderForm(date, onSubmit, onClose)
+              renderForm(date, onSubmit, onClose, args)
             ) : (
               <DefaultForm date={date} onSubmit={onSubmit} onCancel={onClose} />
             )}

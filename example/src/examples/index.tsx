@@ -93,3 +93,6 @@ const CalendarExample = () => {
 }
 
 export default CalendarExample;
+
+// Outros exemplos disponíveis
+export { default as ArgsExample } from './ArgsExample';

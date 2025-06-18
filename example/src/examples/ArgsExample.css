@@ -1,0 +1,160 @@
+.args-example-container {
+  padding: 20px;
+}
+
+.args-example-info-box {
+  background: #e7f3ff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #b3d9ff;
+}
+
+.args-example-info-box h3 {
+  margin: 0 0 10px 0;
+}
+
+.args-example-info-box ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.args-example-user-info {
+  margin-bottom: 20px;
+}
+
+.args-example-user-info h3 {
+  margin-bottom: 10px;
+}
+
+.args-example-user-card {
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+}
+
+.args-example-form-container {
+  padding: 20px;
+}
+
+.args-example-user-data {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #dee2e6;
+}
+
+.args-example-user-data h4 {
+  margin: 0 0 10px 0;
+  color: #495057;
+}
+
+.args-example-user-data p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.args-example-form-group {
+  margin-bottom: 15px;
+}
+
+.args-example-form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.args-example-form-group input,
+.args-example-form-group select,
+.args-example-form-group textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.args-example-form-group textarea {
+  resize: vertical;
+}
+
+.args-example-form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.args-example-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.args-example-btn-cancel {
+  background-color: #6c757d;
+  color: white;
+}
+
+.args-example-btn-cancel:hover {
+  background-color: #5a6268;
+}
+
+.args-example-btn-submit {
+  background-color: #007bff;
+  color: white;
+}
+
+.args-example-btn-submit:hover {
+  background-color: #0056b3;
+}
+
+.args-example-appointments {
+  margin-top: 30px;
+}
+
+.args-example-appointments h3 {
+  margin-bottom: 15px;
+}
+
+.args-example-appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.args-example-appointment-card {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.args-example-appointment-card h4 {
+  margin: 0 0 10px 0;
+  color: #495057;
+}
+
+.args-example-appointment-card p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .args-example-container {
+    padding: 10px;
+  }
+  
+  .args-example-form-actions {
+    flex-direction: column;
+  }
+  
+  .args-example-btn {
+    width: 100%;
+  }
+}
