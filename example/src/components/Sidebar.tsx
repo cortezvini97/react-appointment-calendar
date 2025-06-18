@@ -74,21 +74,29 @@ const examples: ExampleItem[] = [
     name: 'Label Datas Desabilitadas',
     description: 'Teste de labels para datas desabilitadas',
     category: 'Configurações'
-  },  {
+  }, 
+   {
     path: '/working-hours',
     name: 'Horário de Funcionamento',
     description: 'Exemplo com horários de trabalho',
     category: 'Configurações'
-  },  {
+  },  
+  {
     path: '/previous-months',
     name: 'Previous Months',
     description: 'Teste de navegação para meses anteriores',
     category: 'Configurações'
-  },
+  },  
   {
     path: '/show-existing-events',
     name: 'Controle de Eventos Existentes',
     description: 'Exemplo de controle para exibir/ocultar eventos existentes no modal',
+    category: 'Configurações'
+  },
+  {
+    path: '/previous-button-control',
+    name: 'Controle Botão Anterior',
+    description: 'Exemplo de controle de exibição do botão de mês anterior',
     category: 'Configurações'
   },
   {
@@ -107,9 +115,8 @@ const Sidebar: React.FC = () => {
 
   return (
     <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
-      <div className="sidebar-header">
-        <h2 className="sidebar-title">
-          {!isCollapsed && 'React Event Scheduler'}
+      <div className="sidebar-header">        <h2 className="sidebar-title">
+          {!isCollapsed && 'React Appointment Calendar'}
         </h2>
         <button 
           className="collapse-btn"

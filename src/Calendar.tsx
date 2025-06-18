@@ -29,6 +29,7 @@ export const Calendar: React.FC<CalendarProps> = ({
   enableChristianHolidays = true,
   allowChristianHolidayBooking = false,
   previousMonths = true,
+  showDisabledPreviousButton = false,
   disabledDates = null,
   enableSaturday = false,
   enableSunday = false,
@@ -178,7 +179,6 @@ export const Calendar: React.FC<CalendarProps> = ({
   const handleNextMonth = () => {
     setSelectedDate(getNextMonth(selectedDate));
   };
-
   // Verificar se o botão de mês anterior deve estar desabilitado
   const isPreviousMonthDisabled = () => {
     if (previousMonths) {
@@ -191,7 +191,26 @@ export const Calendar: React.FC<CalendarProps> = ({
     
     // Desabilitar se o mês selecionado é o mês atual ou anterior
     return selectedMonth <= currentMonth;
-  };  const getDayClassName = (day: CalendarDay): string => {
+  };
+
+  // Verificar se o botão de mês anterior deve ser exibido
+  const shouldShowPreviousButton = () => {
+    if (previousMonths) {
+      return true; // Se previousMonths é true, sempre mostrar
+    }
+    
+    // Se previousMonths é false, verificar a configuração showDisabledPreviousButton
+    if (showDisabledPreviousButton) {
+      return true; // Mostrar o botão desabilitado
+    }
+    
+    // Se showDisabledPreviousButton é false, só mostrar se não estiver no mês atual
+    const today = new Date();
+    const currentMonth = today.getFullYear() * 12 + today.getMonth();
+    const selectedMonth = selectedDate.getFullYear() * 12 + selectedDate.getMonth();
+    
+    return selectedMonth > currentMonth;
+  };const getDayClassName = (day: CalendarDay): string => {
     const classes = ['calendar-day'];
     
     if (!day.isCurrentMonth) {
@@ -265,20 +284,21 @@ export const Calendar: React.FC<CalendarProps> = ({
   };
 
   const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
-  return (
-    <div 
+  return (    <div 
       className={`calendar-container ${className || ''}`} 
       {...(style && { style })}
     >
       <div className="calendar-header">
-        <button
-          className="calendar-nav-button"
-          onClick={handlePreviousMonth}
-          aria-label="Mês anterior"
-          disabled={isPreviousMonthDisabled()}
-        >
-          ‹
-        </button>
+        {shouldShowPreviousButton() && (
+          <button
+            className="calendar-nav-button"
+            onClick={handlePreviousMonth}
+            aria-label="Mês anterior"
+            disabled={isPreviousMonthDisabled()}
+          >
+            ‹
+          </button>
+        )}
         
         <h2 className="calendar-title">
           {getMonthName(selectedDate)} {getYear(selectedDate)}
@@ -291,7 +311,7 @@ export const Calendar: React.FC<CalendarProps> = ({
         >
           ›
         </button>
-      </div>      {workingHoursStatus && !workingHoursCurrentDayOnly && (
+      </div>{workingHoursStatus && !workingHoursCurrentDayOnly && (
         <div className={`calendar-working-hours-info ${workingHoursStatus.isOpen ? '' : 'closed'}`}>
           {workingHoursStatus.message}
         </div>

@@ -1,5 +1,5 @@
 /**
- * Exemplo Prático de Uso da Biblioteca React Calendar Scheduler
+ * Exemplo Prático de Uso da Biblioteca React Appointment Calendar
  * 
  * Este exemplo demonstra como usar a biblioteca em uma aplicação real,
  * incluindo gerenciamento de estado, persistência de dados e formulários customizados.

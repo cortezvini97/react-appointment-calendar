@@ -1,7 +1,8 @@
 {
   "name": "react-appointment-calendar",
-  "version": "1.0.2",
-  "description": "Uma biblioteca de calendário para agendamento de eventos em React.js",  "main": "dist/index.js",
+  "version": "1.0.3",
+  "description": "Uma biblioteca de calendário para agendamento de eventos em React.js",  
+  "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "style": "dist/Calendar.css",

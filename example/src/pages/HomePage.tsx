@@ -2,9 +2,9 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import './HomePage.css';
 
-const markdownContent = `# React Event Scheduler
+const markdownContent = `# React Appointment Calendar
 
-Bem-vindo ao **React Event Scheduler**, uma biblioteca de calendário poderosa e flexível para React!
+Bem-vindo ao **React Appointment Calendar**, uma biblioteca de calendário poderosa e flexível para React!
 
 ## ✨ Recursos Principais
 
@@ -20,13 +20,13 @@ Bem-vindo ao **React Event Scheduler**, uma biblioteca de calendário poderosa e
 ### Instalação
 
 \`\`\`bash
-npm install react-event-scheduler
+npm install react-appointment-calendar
 \`\`\`
 
 ### Exemplo Básico
 
 \`\`\`jsx
-import { Calendar } from 'react-event-scheduler';
+import { Calendar } from 'react-appointment-calendar';
 
 function App() {
   return (

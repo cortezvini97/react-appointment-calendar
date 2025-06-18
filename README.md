@@ -1,6 +1,15 @@
-# React Calendar Scheduler
+# React Appointment Calendar
 
 Uma biblioteca de calendário para agendamento em React.js com funcionalidades avançadas e totalmente customizável.
+
+## 📚 Documentação Completa
+
+👉 **[Acesse a documentação completa](./docs/README.md)** com exemplos interativos, guias de instalação e referência da API.
+
+- 📖 [Guia de Instalação](./docs/installation.md)
+- 🎯 [Exemplo Básico](./docs/examples/basic-example.md)
+- 📚 [Referência da API](./docs/api-reference.md)
+- 🌐 [Exemplos Online](http://localhost:3000) (após rodar o projeto)
 
 ## ✨ Funcionalidades
 
@@ -20,20 +29,20 @@ Uma biblioteca de calendário para agendamento em React.js com funcionalidades a
 ## 🚀 Instalação
 
 ```bash
-npm install react-event-scheduler
+npm install react-appointment-calendar
 ```
 
 ou
 
 ```bash
-yarn add react-event-scheduler
+yarn add react-appointment-calendar
 ```
 
 ## 📝 Uso Básico
 
 ```tsx
 import React, { useState } from 'react';
-import Calendar, { Appointment } from 'react-event-scheduler';
+import Calendar, { Appointment } from 'react-appointment-calendar';
 
 function App() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -200,7 +209,7 @@ const customFormRenderer = (date, onSubmit, onCancel) => {
 
 ```tsx
 import React, { useState } from 'react';
-import Calendar, { Appointment } from 'react-event-scheduler';
+import Calendar, { Appointment } from 'react-appointment-calendar';
 
 function AdvancedCalendar() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -416,4 +425,4 @@ Contribuições são bem-vindas! Veja o arquivo [CONTRIBUTING.md](CONTRIBUTING.m
 
 ## 📞 Suporte
 
-Se você encontrar algum problema ou tiver sugestões, por favor abra uma [issue](https://github.com/cortezvini97/react-event-scheduler/issues).
+Se você encontrar algum problema ou tiver sugestões, por favor abra uma [issue](https://github.com/cortezvini97/react-appointment-calendar/issues).

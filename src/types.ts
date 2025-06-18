@@ -63,12 +63,18 @@ export interface CalendarProps {  /**
    * Esta opção funciona independente de allowHolidayBooking
    */
   allowChristianHolidayBooking?: boolean;
-  
-  /**
+    /**
    * Permite navegação para meses anteriores (padrão: true)
    * Se false, só permite navegar do mês atual para frente
    */
   previousMonths?: boolean;
+  
+  /**
+   * Controla a exibição do botão de mês anterior quando previousMonths é false (padrão: false)
+   * - true: Mostra o botão desabilitado quando previousMonths é false
+   * - false: Oculta completamente o botão quando previousMonths é false
+   */
+  showDisabledPreviousButton?: boolean;
   
   /**
    * Lista de datas desabilitadas
