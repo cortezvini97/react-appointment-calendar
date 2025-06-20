@@ -149,7 +149,8 @@ export const generateCalendarDays = (
   allowHolidayBooking?: boolean,
   disabledDates?: DisabledDate[] | null,
   christianHolidays?: Holiday[] | null,
-  allowChristianHolidayBooking?: boolean
+  allowChristianHolidayBooking?: boolean,
+  blockDay?: boolean
 ): CalendarDay[] => {
   const days: CalendarDay[] = [];
   const firstDay = getFirstDayOfCalendar(currentDate);
@@ -199,11 +200,10 @@ export const generateCalendarDays = (
         isHolidayDisabled = !allowHolidayBooking;
       }
     }
-    
-    const isDisabled = isPast || 
+      const isDisabled = isPast || 
                       (!enableSaturday && isSat) || 
                       (!enableSunday && isSun) ||
-                      isMaxReached ||
+                      (blockDay !== false && isMaxReached) ||
                       isWorkingHoursDisabled ||
                       isHolidayDisabled ||
                       disabledDateInfo.isDisabled;

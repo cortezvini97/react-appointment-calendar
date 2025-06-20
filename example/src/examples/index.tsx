@@ -96,3 +96,4 @@ export default CalendarExample;
 
 // Outros exemplos disponíveis
 export { default as ArgsExample } from './ArgsExample';
+export { default as BlockDayExample } from './BlockDayExample';

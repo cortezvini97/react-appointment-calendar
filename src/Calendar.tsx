@@ -21,10 +21,10 @@ import {
 import './Calendar.css';
 import './CalendarTheme.css';
 
-export const Calendar: React.FC<CalendarProps> = ({
-  currentDate = new Date(),
+export const Calendar: React.FC<CalendarProps> = ({  currentDate = new Date(),
   appointments = [],
   maxAppointmentsPerDay = 3,
+  blockDay = true,
   holidays = null,
   allowHolidayBooking = false,
   enableChristianHolidays = true,
@@ -157,9 +157,10 @@ export const Calendar: React.FC<CalendarProps> = ({
       allowHolidayBooking,
       disabledDates,
       christianHolidays,
-      allowChristianHolidayBooking
+      allowChristianHolidayBooking,
+      blockDay
     );
-  }, [selectedDate, appointments, maxAppointmentsPerDay, enableSaturday, enableSunday, workingHours, workingHoursCurrentDayOnly, holidays, allowHolidayBooking, disabledDates, christianHolidays, allowChristianHolidayBooking]);const handleDayClick = (day: CalendarDay) => {
+  }, [selectedDate, appointments, maxAppointmentsPerDay, enableSaturday, enableSunday, workingHours, workingHoursCurrentDayOnly, holidays, allowHolidayBooking, disabledDates, christianHolidays, allowChristianHolidayBooking, blockDay]);const handleDayClick = (day: CalendarDay) => {
     if (day.isDisabled) return;
 
     // Verificar se deve bloquear agendamento baseado no horário de funcionamento

@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import Calendar, { Appointment, Holiday, DisabledDate, ThemeColor } from 'react-appointment-calendar';
 import './CompleteExamplePage.css';
 
-export const CompleteExamplePage: React.FC = () => {
-  // Estados para todos os parâmetros
+export const CompleteExamplePage: React.FC = () => {  // Estados para todos os parâmetros
   const [appointments, setAppointments] = useState<Appointment[]>([
     {
       id: '1',
@@ -16,12 +15,25 @@ export const CompleteExamplePage: React.FC = () => {
       title: 'Consulta médica',
       date: new Date(2025, 5, 25), // 25 de junho de 2025
       data: { type: 'personal', location: 'Hospital' }
+    },
+    {
+      id: '3',
+      title: 'Reunião com cliente',
+      date: new Date(2025, 5, 25), // 25 de junho de 2025 (mesmo dia)
+      data: { type: 'work', priority: 'medium' }
+    },
+    {
+      id: '4',
+      title: 'Dentista',
+      date: new Date(2025, 5, 25), // 25 de junho de 2025 (mesmo dia - atingindo limite)
+      data: { type: 'personal', location: 'Clínica' }
     }
   ]);
 
   // Configurações básicas
   const [currentDate] = useState<Date>(new Date(2025, 5, 18));
   const [maxAppointmentsPerDay, setMaxAppointmentsPerDay] = useState(3);
+  const [blockDay, setBlockDay] = useState(true);
 
   // Feriados
   const [holidays] = useState<Holiday[]>([
@@ -136,6 +148,19 @@ export const CompleteExamplePage: React.FC = () => {
       
       <p>Este exemplo permite testar todas as funcionalidades e parâmetros do React Appointment Calendar.</p>
 
+      {/* Destaque da funcionalidade blockDay */}
+      <div className="highlight-section">
+        <h3>🚫 Nova Funcionalidade: blockDay</h3>
+        <p>
+          <strong>Teste a funcionalidade blockDay:</strong> O dia 25/06 já possui 3 agendamentos (limite máximo). 
+          Use o controle "Bloquear dia quando atingir limite" para ver a diferença:
+        </p>
+        <ul>
+          <li><strong>blockDay: true</strong> - Dia 25/06 fica bloqueado (não clicável)</li>
+          <li><strong>blockDay: false</strong> - Dia 25/06 permite abrir modal mesmo com limite atingido</li>
+        </ul>
+      </div>
+
       {/* Controles de Configuração */}
       <div className="controls-grid">
         
@@ -154,6 +179,18 @@ export const CompleteExamplePage: React.FC = () => {
                 max="10"
               />
             </label>
+          </div>
+
+          <div className="control-item">
+            <label>
+              <input 
+                type="checkbox" 
+                checked={blockDay} 
+                onChange={(e) => setBlockDay(e.target.checked)}
+              />
+              <strong>Bloquear dia quando atingir limite (blockDay)</strong>
+            </label>
+            <small>Se desmarcado, permite abrir modal mesmo excedendo o limite</small>
           </div>
 
           <div className="control-item">
@@ -377,6 +414,7 @@ export const CompleteExamplePage: React.FC = () => {
         <div className="status-grid">
           <div><strong>Agendamentos:</strong> {appointments.length}</div>
           <div><strong>Max por dia:</strong> {maxAppointmentsPerDay}</div>
+          <div><strong>Block Day:</strong> {blockDay ? 'Ativo' : 'Inativo'}</div>
           <div><strong>Tema:</strong> {selectedTheme}</div>
           <div><strong>Horário:</strong> {workingHours || 'Sem restrição'}</div>
           <div><strong>Sábados:</strong> {enableSaturday ? 'Habilitado' : 'Desabilitado'}</div>
@@ -390,6 +428,7 @@ export const CompleteExamplePage: React.FC = () => {
           currentDate={currentDate}
           appointments={appointments}
           maxAppointmentsPerDay={maxAppointmentsPerDay}
+          blockDay={blockDay}
           holidays={holidays}
           allowHolidayBooking={allowHolidayBooking}
           enableChristianHolidays={enableChristianHolidays}
@@ -410,6 +449,29 @@ export const CompleteExamplePage: React.FC = () => {
           onDayClick={handleDayClick}
           onSubmit={handleSubmit}
         />
+      </div>
+
+      {/* Instruções de teste */}
+      <div className="test-instructions">
+        <h3>🧪 Como Testar a Funcionalidade blockDay</h3>
+        <div className="instructions-grid">
+          <div className="instruction-step">
+            <strong>1. Teste com blockDay: true</strong>
+            <p>Clique no dia <strong>25/06</strong> - não deve abrir o modal pois já tem 3 agendamentos (limite atingido)</p>
+          </div>
+          <div className="instruction-step">
+            <strong>2. Desabilite o blockDay</strong>
+            <p>Desmarque "Bloquear dia quando atingir limite" para definir <code>blockDay: false</code></p>
+          </div>
+          <div className="instruction-step">
+            <strong>3. Teste com blockDay: false</strong>
+            <p>Clique novamente no dia <strong>25/06</strong> - agora deve abrir o modal normalmente</p>
+          </div>
+          <div className="instruction-step">
+            <strong>4. Crie mais agendamentos</strong>
+            <p>Teste criar mais agendamentos no mesmo dia e observe o comportamento</p>
+          </div>
+        </div>
       </div>
 
       {/* Lista de Agendamentos */}

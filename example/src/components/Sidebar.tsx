@@ -88,6 +88,12 @@ const examples: ExampleItem[] = [
     category: 'Avançado'
   },
   {
+    path: '/block-day-example',
+    name: 'Controle de Bloqueio (blockDay)',
+    description: 'Controla se dias com limite atingido ficam bloqueados',
+    category: 'Configurações'
+  },
+  {
     path: '/previous-months',
     name: 'Previous Months',
     description: 'Teste de navegação para meses anteriores',

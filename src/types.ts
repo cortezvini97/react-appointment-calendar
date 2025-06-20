@@ -49,7 +49,14 @@ export interface CalendarProps {  /**
    * Máximo de agendamentos por dia
    */
   maxAppointmentsPerDay?: number;
-    /**
+  
+  /**
+   * Bloqueia o dia quando excede maxAppointmentsPerDay (padrão: true)
+   * Se false, permite abrir o modal mesmo excedendo o limite
+   */
+  blockDay?: boolean;
+  
+  /**
    * Lista de feriados
    */
   holidays?: Holiday[] | null;
