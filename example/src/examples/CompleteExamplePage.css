@@ -140,6 +140,55 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Instruções de teste */
+.test-instructions {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.test-instructions h3 {
+  margin: 0 0 15px 0;
+  color: #856404;
+}
+
+.instructions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.instruction-step {
+  background: white;
+  border: 1px solid #ffeaa7;
+  border-radius: 6px;
+  padding: 15px;
+}
+
+.instruction-step strong {
+  display: block;
+  color: #856404;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.instruction-step p {
+  margin: 0;
+  color: #6c5100;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.instruction-step code {
+  background: #f8f9fa;
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid #dee2e6;
+  font-size: 12px;
+}
+
 /* Lista de agendamentos */
 .appointments-list {
   background: #f8f9fa;
