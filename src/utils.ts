@@ -150,7 +150,9 @@ export const generateCalendarDays = (
   disabledDates?: DisabledDate[] | null,
   christianHolidays?: Holiday[] | null,
   allowChristianHolidayBooking?: boolean,
-  blockDay?: boolean
+  blockDay?: boolean,
+  hours?: string[],
+  tolerance?: number
 ): CalendarDay[] => {
   const days: CalendarDay[] = [];
   const firstDay = getFirstDayOfCalendar(currentDate);
@@ -161,11 +163,26 @@ export const generateCalendarDays = (
   while (currentDay <= lastDay) {
     const dayAppointments = appointments.filter(appointment =>
       isSameDay(appointment.date, currentDay)
-    );    const isCurrentMonth = currentDay.getMonth() === currentDate.getMonth();
+    );    
+    
+    // Calcular maxAppointmentsPerDay dinamicamente quando hours é fornecido
+    let effectiveMaxAppointments = maxAppointmentsPerDay;
+    let isMaxReached = false;
+    
+    if (hours && hours.length > 0 && tolerance !== undefined) {
+      // Para horários específicos, verificar quantos horários ainda estão disponíveis
+      const availableSlots = calculateMaxAppointmentsFromHours(hours, dayAppointments, tolerance, currentDay);
+      isMaxReached = availableSlots <= 0;
+      effectiveMaxAppointments = hours.length; // Valor nominal para compatibilidade
+    } else {
+      // Lógica tradicional
+      isMaxReached = dayAppointments.length >= effectiveMaxAppointments;
+    }
+    
+    const isCurrentMonth = currentDay.getMonth() === currentDate.getMonth();
     const isPast = isPastDate(currentDay);
     const isSat = isSaturday(currentDay);
     const isSun = isSunday(currentDay);
-    const isMaxReached = dayAppointments.length >= maxAppointmentsPerDay;
     
     // Combinar feriados regulares com feriados cristãos
     const combinedHolidays = combineHolidays(holidays, christianHolidays);
@@ -270,12 +287,46 @@ export const getNextMonth = (date: Date): Date => {
  * Valida se um horário está no formato correto (HH:mm-HH:mm)
  */
 export const isValidWorkingHoursFormat = (workingHours: string): boolean => {
-  const regex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]-([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+  const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]-([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
   return regex.test(workingHours);
 };
 
 /**
- * Converte horário string para minutos desde meia-noite
+ * Verifica se o horário atual está dentro do horário de funcionamento
+ */
+export const isWithinWorkingHours = (workingHours: string): boolean => {
+  if (!workingHours || !isValidWorkingHoursFormat(workingHours)) {
+    return true; // Se não há restrição ou formato inválido, considera como dentro do horário
+  }
+
+  const [startTime, endTime] = workingHours.split('-');
+  const now = new Date();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const startMinutes = timeToMinutes(startTime);
+  const endMinutes = timeToMinutes(endTime);
+
+  return currentMinutes >= startMinutes && currentMinutes <= endMinutes;
+};
+
+/**
+ * Gera mensagem de status do horário de funcionamento
+ */
+export const getWorkingHoursMessage = (workingHours: string): string => {
+  if (!workingHours || !isValidWorkingHoursFormat(workingHours)) {
+    return 'Horário de funcionamento não definido';
+  }
+
+  const [startTime, endTime] = workingHours.split('-');
+  const isOpen = isWithinWorkingHours(workingHours);
+  const status = isOpen ? 'Aberto agora' : 'Fechado agora';
+  
+  return `Horário de funcionamento: ${startTime} às ${endTime} (${status})`;
+};
+
+// ============= FUNÇÕES DE HORÁRIOS =============
+
+/**
+ * Converte string de horário "HH:mm" para minutos desde meia-noite
  */
 export const timeToMinutes = (time: string): number => {
   const [hours, minutes] = time.split(':').map(Number);
@@ -283,86 +334,111 @@ export const timeToMinutes = (time: string): number => {
 };
 
 /**
- * Verifica se o horário atual está dentro do horário de funcionamento
+ * Converte minutos desde meia-noite para string "HH:mm"
  */
-export const isWithinWorkingHours = (workingHours: string | null): boolean => {
-  if (!workingHours || typeof workingHours !== 'string') return true; // Se não há horário definido, sempre permite
-  
-  if (!isValidWorkingHoursFormat(workingHours)) {
-    console.warn(`Formato de horário inválido: ${workingHours}. Use o formato HH:mm-HH:mm`);
-    return true; // Em caso de formato inválido, permite agendamento
-  }
-  
+export const minutesToTime = (minutes: number): string => {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+};
+
+/**
+ * Verifica se dois horários conflitam baseado na tolerância
+ */
+export const timesConflict = (time1: string, time2: string, tolerance: number): boolean => {
+  const minutes1 = timeToMinutes(time1);
+  const minutes2 = timeToMinutes(time2);
+  return Math.abs(minutes1 - minutes2) < tolerance;
+};
+
+/**
+ * Calcula horários disponíveis baseado nos agendamentos existentes e tolerância
+ */
+export const getAvailableTimeSlots = (
+  allHours: string[],
+  existingAppointments: Appointment[],
+  tolerance: number = 0,
+  selectedDate?: Date
+): { time: string; isAvailable: boolean; conflictsWith?: string[]; isPast?: boolean }[] => {
+  const existingTimes = existingAppointments
+    .map(apt => apt.time)
+    .filter(time => time !== undefined) as string[];
+
   const now = new Date();
-  const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-  const currentMinutes = timeToMinutes(currentTime);
-  
-  const [startTime, endTime] = workingHours.split('-');
-  const startMinutes = timeToMinutes(startTime);
-  const endMinutes = timeToMinutes(endTime);
-  
-  // Verifica se é horário noturno (ex: 22:00-06:00)
-  if (endMinutes < startMinutes) {
-    // Horário atravessa a meia-noite
-    return currentMinutes >= startMinutes || currentMinutes <= endMinutes;
-  } else {
-    // Horário normal no mesmo dia
-    return currentMinutes >= startMinutes && currentMinutes <= endMinutes;
-  }
+  const isToday = selectedDate && isSameDay(selectedDate, now);
+
+  return allHours.map(hour => {
+    const conflicts = existingTimes.filter(existingTime => 
+      timesConflict(hour, existingTime, tolerance)
+    );
+    
+    // Verifica se o horário já passou (apenas para o dia atual)
+    let isPast = false;
+    let isTooClose = false;
+    if (isToday) {
+      const hourMinutes = timeToMinutes(hour);
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      
+      // Verifica se o horário já passou
+      isPast = hourMinutes <= currentMinutes;
+      
+      // Verifica se o horário está muito próximo do atual (considerando tolerância)
+      if (tolerance > 0 && !isPast) {
+        isTooClose = (hourMinutes - currentMinutes) < tolerance;
+      }
+    }
+    
+    return {
+      time: hour,
+      isAvailable: conflicts.length === 0 && !isPast && !isTooClose,
+      conflictsWith: conflicts.length > 0 ? conflicts : undefined,
+      isPast: isPast || isTooClose
+    };
+  });
 };
 
 /**
- * Obtém mensagem de horário de funcionamento para tooltip
+ * Calcula o número máximo de agendamentos baseado nos horários disponíveis
  */
-export const getWorkingHoursMessage = (workingHours: string | null): string => {
-  if (!workingHours || !workingHours.includes('-')) return '';
-  
-  const isOpen = isWithinWorkingHours(workingHours);
-  const parts = workingHours.split('-');
-  
-  if (parts.length !== 2) return '';
-  
-  const [startTime, endTime] = parts;
-  
-  if (isOpen) {
-    return `Horário de funcionamento: ${startTime} às ${endTime} (Aberto agora)`;
-  } else {
-    return `Horário de funcionamento: ${startTime} às ${endTime} (Fechado agora)`;
-  }
+export const calculateMaxAppointmentsFromHours = (
+  hours: string[],
+  existingAppointments: Appointment[],
+  tolerance: number = 0,
+  selectedDate?: Date
+): number => {
+  const availableSlots = getAvailableTimeSlots(hours, existingAppointments, tolerance, selectedDate);
+  return availableSlots.filter(slot => slot.isAvailable).length;
 };
 
 /**
- * Verifica se deve bloquear agendamento baseado no horário de funcionamento e configuração
+ * Valida se um horário está disponível para agendamento
  */
-export const shouldBlockAppointment = (
-  workingHours: string | null, 
-  selectedDate: Date, 
-  currentDayOnly: boolean = false
+export const isTimeSlotAvailable = (
+  requestedTime: string,
+  hours: string[],
+  existingAppointments: Appointment[],
+  tolerance: number = 0
 ): boolean => {
-  if (!workingHours) return false; // Se não há horário definido, não bloqueia
-  
-  if (!isValidWorkingHoursFormat(workingHours)) {
-    console.warn(`Formato de horário inválido: ${workingHours}. Use o formato HH:mm-HH:mm`);
-    return false; // Em caso de formato inválido, não bloqueia
-  }
-  
-  // Se está dentro do horário de funcionamento, não bloqueia
-  if (isWithinWorkingHours(workingHours)) {
+  // Verifica se o horário está na lista de horários disponíveis
+  if (!hours.includes(requestedTime)) {
     return false;
   }
-  
-  // Se está fora do horário de funcionamento:
-  if (currentDayOnly) {
-    // Bloqueia apenas se for o dia atual
-    const today = new Date();
-    const isToday = selectedDate.getFullYear() === today.getFullYear() &&
-                   selectedDate.getMonth() === today.getMonth() &&
-                   selectedDate.getDate() === today.getDate();
-    return isToday;
-  } else {
-    // Bloqueia independente da data
-    return true;
-  }
+
+  // Verifica conflitos com agendamentos existentes
+  const existingTimes = existingAppointments
+    .map(apt => apt.time)
+    .filter(time => time !== undefined) as string[];
+
+  return !existingTimes.some(existingTime => 
+    timesConflict(requestedTime, existingTime, tolerance)
+  );
+};
+
+/**
+ * Ordena horários em ordem cronológica
+ */
+export const sortTimes = (times: string[]): string[] => {
+  return times.sort((a, b) => timeToMinutes(a) - timeToMinutes(b));
 };
 
 /**
@@ -415,4 +491,25 @@ export const combineHolidays = (
   );
   
   return uniqueHolidays;
+};
+
+/**
+ * Verifica se um agendamento deve ser bloqueado baseado no horário de funcionamento
+ */
+export const shouldBlockAppointment = (
+  workingHours: string | null,
+  date: Date,
+  workingHoursCurrentDayOnly: boolean = false
+): boolean => {
+  if (!workingHours) {
+    return false;
+  }
+
+  // Se workingHoursCurrentDayOnly é true, só verifica para o dia atual
+  if (workingHoursCurrentDayOnly && !isToday(date)) {
+    return false;
+  }
+
+  // Verifica se está fora do horário de funcionamento
+  return !isWithinWorkingHours(workingHours);
 };

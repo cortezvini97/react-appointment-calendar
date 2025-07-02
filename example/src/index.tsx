@@ -16,6 +16,7 @@ import SimpleHolidayTestPage from "./pages/SimpleHolidayTestPage";
 import DisabledDatesExample from "./examples/DisabledDatesExample";
 import DisabledDatesLabelTest from "./examples/DisabledDatesLabelTest";
 import WorkingHoursExample from "./examples/WorkingHoursExample";
+import SpecificHoursExample from "./examples/SpecificHoursExample";
 import PreviousMonthsExample from "./examples/PreviousMonthsExample";
 import ShowExistingEventsExample from "./examples/ShowExistingEventsExample";
 import PreviousButtonControlExample from "./examples/PreviousButtonControlExample";
@@ -46,9 +47,18 @@ const App = () => {
           <Route path="movable-holidays" element={<MovableHolidaysExample />} />
           <Route path="holiday-booking-test" element={<HolidayBookingTestExample />} />
           <Route path="simple-holiday-test" element={<SimpleHolidayTestPage />} />
-          <Route path="disabled-dates" element={<DisabledDatesExample />} />          <Route path="disabled-dates-label" element={<DisabledDatesLabelTest />} />          <Route path="working-hours" element={<WorkingHoursExample />} />          <Route path="previous-months" element={<PreviousMonthsExample />} />
-          <Route path="show-existing-events" element={<ShowExistingEventsExample />} />          <Route path="previous-button-control" element={<PreviousButtonControlExample />} />          <Route path="today-style" element={<TodayStyleExample />} />
-          <Route path="theme-example" element={<ThemeExample />} />          <Route path="purple-theme" element={<PurpleThemeExample />} />          <Route path="custom-theme" element={<CustomThemeExample />} />          <Route path="complete-example" element={<CompleteExamplePage />} />
+          <Route path="disabled-dates" element={<DisabledDatesExample />} />         
+          <Route path="disabled-dates-label" element={<DisabledDatesLabelTest />} />          
+          <Route path="working-hours" element={<WorkingHoursExample />} />
+          <Route path="specific-hours" element={<SpecificHoursExample />} />
+          <Route path="previous-months" element={<PreviousMonthsExample />} />
+          <Route path="show-existing-events" element={<ShowExistingEventsExample />} />          
+          <Route path="previous-button-control" element={<PreviousButtonControlExample />} />          
+          <Route path="today-style" element={<TodayStyleExample />} />
+          <Route path="theme-example" element={<ThemeExample />} />          
+          <Route path="purple-theme" element={<PurpleThemeExample />} />          
+          <Route path="custom-theme" element={<CustomThemeExample />} />        
+           <Route path="complete-example" element={<CompleteExamplePage />} />
           <Route path="corrections-demo" element={<CorrectionsDemoExample />} />
           <Route path="args-example" element={<ArgsExample />} />
           <Route path="block-day-example" element={<BlockDayExample />} />

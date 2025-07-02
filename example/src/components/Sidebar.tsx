@@ -82,6 +82,12 @@ const examples: ExampleItem[] = [
     category: 'Configurações'
   },  
   {
+    path: '/specific-hours',
+    name: 'Horários Específicos',
+    description: 'Exemplo com horários específicos e tolerância',
+    category: 'Configurações'
+  },
+  {
     path: '/args-example',
     name: 'Args para Formulário',
     description: 'Exemplo passando argumentos para formulário customizado',

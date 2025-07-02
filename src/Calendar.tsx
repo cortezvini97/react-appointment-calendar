@@ -17,6 +17,8 @@ import {
   parseLocalDate,
   createDate,
   convertChristianHolidaysToCalendarFormat,
+  calculateMaxAppointmentsFromHours,
+  sortTimes,
 } from './utils';
 import './Calendar.css';
 import './CalendarTheme.css';
@@ -25,6 +27,8 @@ export const Calendar: React.FC<CalendarProps> = ({  currentDate = new Date(),
   appointments = [],
   maxAppointmentsPerDay = 3,
   blockDay = true,
+  hours,
+  tolerance = 0,
   holidays = null,
   allowHolidayBooking = false,
   enableChristianHolidays = true,
@@ -144,11 +148,17 @@ export const Calendar: React.FC<CalendarProps> = ({  currentDate = new Date(),
       isOpen: isWithinWorkingHours(workingHours),
       message: getWorkingHoursMessage(workingHours)
     };
-  }, [workingHours, currentTime]);const calendarDays = React.useMemo(() => {
+  }, [workingHours, currentTime]);
+
+  // Quando hours é fornecido, usar o maxAppointmentsPerDay original como fallback
+  // O cálculo dinâmico será feito dentro de generateCalendarDays
+  const effectiveMaxAppointments = maxAppointmentsPerDay;
+
+  const calendarDays = React.useMemo(() => {
     return generateCalendarDays(
       selectedDate,
       appointments,
-      maxAppointmentsPerDay,
+      effectiveMaxAppointments,
       enableSaturday,
       enableSunday,
       workingHours,
@@ -158,9 +168,11 @@ export const Calendar: React.FC<CalendarProps> = ({  currentDate = new Date(),
       disabledDates,
       christianHolidays,
       allowChristianHolidayBooking,
-      blockDay
+      blockDay,
+      hours,
+      tolerance
     );
-  }, [selectedDate, appointments, maxAppointmentsPerDay, enableSaturday, enableSunday, workingHours, workingHoursCurrentDayOnly, holidays, allowHolidayBooking, disabledDates, christianHolidays, allowChristianHolidayBooking, blockDay]);const handleDayClick = (day: CalendarDay) => {
+  }, [selectedDate, appointments, effectiveMaxAppointments, enableSaturday, enableSunday, workingHours, workingHoursCurrentDayOnly, holidays, allowHolidayBooking, disabledDates, christianHolidays, allowChristianHolidayBooking, blockDay, hours, tolerance]);const handleDayClick = (day: CalendarDay) => {
     if (day.isDisabled) return;
 
     // Verificar se deve bloquear agendamento baseado no horário de funcionamento
@@ -301,7 +313,7 @@ export const Calendar: React.FC<CalendarProps> = ({  currentDate = new Date(),
     // Agora apenas desabilita o dia sem estilo vermelho
     
     return classes.join(' ');
-  };const getTooltipText = (day: CalendarDay): string => {
+  };  const getTooltipText = (day: CalendarDay): string => {
     let tooltip = formatDate(day.date);
     
     if (day.isHoliday && day.holidayLabel) {
@@ -313,18 +325,38 @@ export const Calendar: React.FC<CalendarProps> = ({  currentDate = new Date(),
     }
     
     if (showAvailableSlots && !day.isDisabled && !day.isPast) {
-      const availableSlots = maxAppointmentsPerDay - day.appointments.length;
+      let availableSlots: number;
+      
+      if (hours && hours.length > 0 && tolerance !== undefined) {
+        // Calcular vagas baseado nos horários disponíveis
+        availableSlots = calculateMaxAppointmentsFromHours(hours, day.appointments, tolerance, day.date);
+      } else {
+        // Usar lógica tradicional
+        availableSlots = maxAppointmentsPerDay - day.appointments.length;
+      }
+      
       tooltip += ` - ${availableSlots} vagas disponíveis`;
     }
-      if (day.isDisabled) {
+    
+    if (day.isDisabled) {
       if (day.isHoliday && !allowHolidayBooking) {
         tooltip += ' - Feriado (agendamentos não permitidos)';
       } else if (day.isDisabledDate && !disabledDates) {
         tooltip += ' - Data desabilitada';
-      } else if (day.appointments.length >= maxAppointmentsPerDay) {
-        tooltip += ' - Limite de agendamentos atingido';
       } else {
-        tooltip += ' - Não disponível';
+        // Verificar se é por limite de agendamentos (dinâmico ou fixo)
+        let maxForDay: number;
+        if (hours && hours.length > 0 && tolerance !== undefined) {
+          maxForDay = calculateMaxAppointmentsFromHours(hours, [], tolerance, day.date);
+        } else {
+          maxForDay = maxAppointmentsPerDay;
+        }
+        
+        if (day.appointments.length >= maxForDay) {
+          tooltip += ' - Limite de agendamentos atingido';
+        } else {
+          tooltip += ' - Não disponível';
+        }
       }
     }
     
@@ -412,6 +444,8 @@ export const Calendar: React.FC<CalendarProps> = ({  currentDate = new Date(),
           renderForm={renderForm}
           showExistingEvents={showExistingEvents}
           args={args}
+          hours={hours}
+          tolerance={tolerance}
         />
       )}
 

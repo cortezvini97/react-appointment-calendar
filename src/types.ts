@@ -11,6 +11,13 @@ export interface Appointment {
   title: string;
   date: Date;
   data?: any;
+  time?: string; // Horário do agendamento no formato "HH:mm"
+}
+
+export interface TimeSlot {
+  time: string; // Horário no formato "HH:mm"
+  isAvailable: boolean;
+  conflictsWith?: string[]; // Horários que conflitam devido à tolerância
 }
 
 export interface Holiday {
@@ -49,6 +56,18 @@ export interface CalendarProps {  /**
    * Máximo de agendamentos por dia
    */
   maxAppointmentsPerDay?: number;
+  
+  /**
+   * Horários específicos disponíveis para agendamento (formato: ["08:00", "09:00", "10:00"])
+   * Quando definido, substitui maxAppointmentsPerDay pelo tamanho do array
+   */
+  hours?: string[];
+  
+  /**
+   * Tolerância em minutos para conflito de horários (padrão: 0)
+   * Ex: tolerance=30 com horário "08:00" bloqueia agendamentos de 07:30 às 08:30
+   */
+  tolerance?: number;
   
   /**
    * Bloqueia o dia quando excede maxAppointmentsPerDay (padrão: true)
@@ -185,4 +204,6 @@ export interface ModalProps {
   renderForm?: (date: Date, onSubmit: (data: any, event?: React.FormEvent) => void, onCancel: () => void, args?: any) => React.ReactNode;
   showExistingEvents?: boolean;
   args?: any;
+  hours?: string[];
+  tolerance?: number;
 }

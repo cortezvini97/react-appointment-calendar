@@ -1,23 +1,51 @@
 import * as React from 'react';
 import { ModalProps } from './types';
+import { getAvailableTimeSlots, sortTimes } from './utils';
 import './Modal.css';
 
 const DefaultForm: React.FC<{
   date: Date;
   onSubmit: (data: any) => void;
   onCancel: () => void;
-}> = ({ date, onSubmit, onCancel }) => {
+  hours?: string[];
+  tolerance?: number;
+  appointments?: any[];
+}> = ({ date, onSubmit, onCancel, hours, tolerance = 0, appointments = [] }) => {
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
+  const [selectedTime, setSelectedTime] = React.useState('');
+
+  // Calcula horários disponíveis se hours estiver definido
+  const timeSlotInfo = React.useMemo(() => {
+    if (!hours || hours.length === 0) {
+      return null;
+    }
+    
+    const timeSlots = getAvailableTimeSlots(hours, appointments, tolerance, date);
+    const availableSlots = timeSlots.filter(slot => slot.isAvailable);
+    const pastSlots = timeSlots.filter(slot => slot.isPast);
+    const conflictSlots = timeSlots.filter(slot => slot.conflictsWith && slot.conflictsWith.length > 0);
+    
+    return {
+      available: sortTimes(availableSlots.map(slot => slot.time)),
+      past: pastSlots.length,
+      conflicts: conflictSlots.length,
+      total: timeSlots.length
+    };
+  }, [hours, appointments, tolerance, date]);
+
+  const availableTimeSlots = timeSlotInfo?.available || null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (title.trim()) {
-      onSubmit({
+    if (title.trim() && (!hours || selectedTime)) {
+      const submissionData = {
         title: title.trim(),
         description: description.trim(),
-        date
-      });
+        date,
+        ...(hours && selectedTime && { time: selectedTime })
+      };
+      onSubmit(submissionData);
     }
   };
 
@@ -48,11 +76,52 @@ const DefaultForm: React.FC<{
         />
       </div>
 
+      {/* Campo de horário - só aparece se hours estiver definido */}
+      {hours && hours.length > 0 && (
+        <div className="calendar-form-group">
+          <label htmlFor="time">Horário:</label>
+          {availableTimeSlots && availableTimeSlots.length > 0 ? (
+            <select
+              id="time"
+              value={selectedTime}
+              onChange={(e) => setSelectedTime(e.target.value)}
+              required
+              className="calendar-form-select"
+            >
+              <option value="">Selecione um horário</option>
+              {availableTimeSlots.map(time => (
+                <option key={time} value={time}>
+                  {time}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <div className="calendar-no-times-available">
+              <p>Não há horários disponíveis para este dia.</p>
+              <small>
+                {timeSlotInfo && (
+                  <>
+                    Total de horários: {timeSlotInfo.total} | 
+                    {timeSlotInfo.past > 0 && ` Já passaram: ${timeSlotInfo.past} |`}
+                    {timeSlotInfo.conflicts > 0 && ` Conflitos: ${timeSlotInfo.conflicts} |`}
+                    {tolerance > 0 && ` Tolerância: ${tolerance} minutos`}
+                  </>
+                )}
+              </small>
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="calendar-form-actions">
         <button type="button" onClick={onCancel} className="calendar-btn calendar-btn-cancel">
           Cancelar
         </button>
-        <button type="submit" className="calendar-btn calendar-btn-primary">
+        <button 
+          type="submit" 
+          className="calendar-btn calendar-btn-primary"
+          disabled={hours && hours.length > 0 && (!availableTimeSlots || availableTimeSlots.length === 0)}
+        >
           Agendar
         </button>
       </div>
@@ -68,7 +137,9 @@ export const Modal: React.FC<ModalProps> = ({
   onSubmit,
   renderForm,
   showExistingEvents = true,
-  args
+  args,
+  hours,
+  tolerance
 }) => {
   React.useEffect(() => {
     if (isOpen) {
@@ -135,6 +206,7 @@ export const Modal: React.FC<ModalProps> = ({
                 {appointments.map((appointment) => (
                   <li key={appointment.id} className="calendar-appointment-item">
                     <strong>{appointment.title}</strong>
+                    {appointment.time && <span className="appointment-time"> - {appointment.time}</span>}
                     {appointment.data?.description && (
                       <p>{appointment.data.description}</p>
                     )}
@@ -147,7 +219,14 @@ export const Modal: React.FC<ModalProps> = ({
             {renderForm ? (
               renderForm(date, onSubmit, onClose, args)
             ) : (
-              <DefaultForm date={date} onSubmit={onSubmit} onCancel={onClose} />
+              <DefaultForm 
+                date={date} 
+                onSubmit={onSubmit} 
+                onCancel={onClose} 
+                hours={hours}
+                tolerance={tolerance}
+                appointments={appointments}
+              />
             )}
           </div>
         </div>

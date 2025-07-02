@@ -72,6 +72,15 @@ export const CompleteExamplePage: React.FC = () => {  // Estados para todos os p
   const [workingHours, setWorkingHours] = useState<string | null>('08:00-18:00');
   const [workingHoursCurrentDayOnly, setWorkingHoursCurrentDayOnly] = useState(false);
 
+  // Horários específicos com tolerância
+  const [useSpecificHours, setUseSpecificHours] = useState(false);
+  const [specificHours] = useState<string[]>([
+    "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
+    "11:00", "11:30", "14:00", "14:30", "15:00", "15:30",
+    "16:00", "16:30", "17:00", "17:30"
+  ]);
+  const [tolerance, setTolerance] = useState(30);
+
   // Tema
   const [selectedTheme, setSelectedTheme] = useState<'default' | 'purple' | 'blue' | 'green' | 'red' | 'dark'>('default');
 
@@ -123,6 +132,7 @@ export const CompleteExamplePage: React.FC = () => {  // Estados para todos os p
       id: Date.now().toString(),
       title: data.title || 'Novo agendamento',
       date: date,
+      ...(useSpecificHours && data.time && { time: data.time }),
       data: data
     };
     
@@ -385,6 +395,54 @@ export const CompleteExamplePage: React.FC = () => {  // Estados para todos os p
           </div>
         </div>
 
+        {/* Horários Específicos */}
+        <div className="control-section specific-hours">
+          <h3>⏰ Horários Específicos</h3>
+          
+          <div className="control-item">
+            <label>
+              <input 
+                type="checkbox" 
+                checked={useSpecificHours} 
+                onChange={(e) => setUseSpecificHours(e.target.checked)}
+              />
+              <span>Usar horários específicos</span>
+            </label>
+            <small>Se ativado, substitui o controle tradicional de máximo por dia</small>
+          </div>
+
+          {useSpecificHours && (
+            <>
+              <div className="control-item">
+                <label>
+                  <strong>Tolerância (minutos):</strong>
+                  <select 
+                    value={tolerance} 
+                    onChange={(e) => setTolerance(Number(e.target.value))}
+                  >
+                    <option value={15}>15 minutos</option>
+                    <option value={30}>30 minutos</option>
+                    <option value={45}>45 minutos</option>
+                    <option value={60}>60 minutos</option>
+                    <option value={90}>90 minutos</option>
+                  </select>
+                </label>
+                <small>Tempo mínimo entre agendamentos</small>
+              </div>
+
+              <div className="hours-info">
+                <strong>Horários disponíveis:</strong>
+                <div className="hours-grid">
+                  {specificHours.map((hour, index) => (
+                    <span key={index} className="hour-tag">{hour}</span>
+                  ))}
+                </div>
+                <small>Total: {specificHours.length} horários • Tolerância: {tolerance} min</small>
+              </div>
+            </>
+          )}
+        </div>
+
         {/* Temas */}
         <div className="control-section themes">
           <h3>🎨 Temas</h3>
@@ -395,11 +453,6 @@ export const CompleteExamplePage: React.FC = () => {  // Estados para todos os p
                 key={theme.id}
                 onClick={() => setSelectedTheme(theme.id as any)}
                 className={`theme-button ${selectedTheme === theme.id ? 'active' : ''}`}
-                style={{
-                  borderColor: selectedTheme === theme.id ? theme.color : '#ddd',
-                  backgroundColor: selectedTheme === theme.id ? theme.color : 'white',
-                  color: selectedTheme === theme.id ? 'white' : '#333'
-                }}
               >
                 {theme.name}
               </button>
@@ -413,7 +466,14 @@ export const CompleteExamplePage: React.FC = () => {  // Estados para todos os p
         <h3>📊 Estado Atual</h3>
         <div className="status-grid">
           <div><strong>Agendamentos:</strong> {appointments.length}</div>
-          <div><strong>Max por dia:</strong> {maxAppointmentsPerDay}</div>
+          <div><strong>Max por dia:</strong> {useSpecificHours ? 'Dinâmico (baseado em horários)' : maxAppointmentsPerDay}</div>
+          <div><strong>Modo:</strong> {useSpecificHours ? 'Horários específicos' : 'Tradicional'}</div>
+          {useSpecificHours && (
+            <>
+              <div><strong>Tolerância:</strong> {tolerance} min</div>
+              <div><strong>Horários:</strong> {specificHours.length} disponíveis</div>
+            </>
+          )}
           <div><strong>Block Day:</strong> {blockDay ? 'Ativo' : 'Inativo'}</div>
           <div><strong>Tema:</strong> {selectedTheme}</div>
           <div><strong>Horário:</strong> {workingHours || 'Sem restrição'}</div>
@@ -429,6 +489,7 @@ export const CompleteExamplePage: React.FC = () => {  // Estados para todos os p
           appointments={appointments}
           maxAppointmentsPerDay={maxAppointmentsPerDay}
           blockDay={blockDay}
+          {...(useSpecificHours && { hours: specificHours, tolerance })}
           holidays={holidays}
           allowHolidayBooking={allowHolidayBooking}
           enableChristianHolidays={enableChristianHolidays}
@@ -453,23 +514,23 @@ export const CompleteExamplePage: React.FC = () => {  // Estados para todos os p
 
       {/* Instruções de teste */}
       <div className="test-instructions">
-        <h3>🧪 Como Testar a Funcionalidade blockDay</h3>
+        <h3>🧪 Como Testar as Funcionalidades</h3>
         <div className="instructions-grid">
           <div className="instruction-step">
-            <strong>1. Teste com blockDay: true</strong>
-            <p>Clique no dia <strong>25/06</strong> - não deve abrir o modal pois já tem 3 agendamentos (limite atingido)</p>
+            <strong>1. Teste blockDay (modo tradicional)</strong>
+            <p>Com "Usar horários específicos" <strong>desabilitado</strong>, clique no dia <strong>25/06</strong> - não deve abrir o modal pois já tem 3 agendamentos (limite atingido)</p>
           </div>
           <div className="instruction-step">
-            <strong>2. Desabilite o blockDay</strong>
-            <p>Desmarque "Bloquear dia quando atingir limite" para definir <code>blockDay: false</code></p>
+            <strong>2. Teste horários específicos</strong>
+            <p>Habilite "Usar horários específicos" e clique em qualquer dia - o modal mostrará apenas horários válidos baseados na tolerância</p>
           </div>
           <div className="instruction-step">
-            <strong>3. Teste com blockDay: false</strong>
-            <p>Clique novamente no dia <strong>25/06</strong> - agora deve abrir o modal normalmente</p>
+            <strong>3. Teste tolerância</strong>
+            <p>Crie agendamentos próximos e mude a tolerância para ver como os horários são bloqueados</p>
           </div>
           <div className="instruction-step">
-            <strong>4. Crie mais agendamentos</strong>
-            <p>Teste criar mais agendamentos no mesmo dia e observe o comportamento</p>
+            <strong>4. Compare modos</strong>
+            <p>Alterne entre modo tradicional e horários específicos para ver as diferenças no comportamento</p>
           </div>
         </div>
       </div>
@@ -482,6 +543,7 @@ export const CompleteExamplePage: React.FC = () => {  // Estados para todos os p
             {appointments.map((appointment) => (
               <div key={appointment.id} className="appointment-item">
                 <strong>{appointment.title}</strong> - {appointment.date.toLocaleDateString('pt-BR')}
+                {appointment.time && <span className="appointment-time"> às {appointment.time}</span>}
                 {appointment.data && (
                   <div className="appointment-data">
                     {JSON.stringify(appointment.data)}

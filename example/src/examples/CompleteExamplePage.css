@@ -104,6 +104,110 @@
   font-style: italic;
 }
 
+/* Lista de feriados */
+.holidays-list {
+  margin-top: 15px;
+}
+
+.holidays-list strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #495057;
+}
+
+.holidays-list ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.holidays-list li {
+  margin-bottom: 4px;
+  font-size: 13px;
+  color: #666;
+}
+
+/* Horários específicos */
+.hours-info {
+  margin-top: 15px;
+  padding: 15px;
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+}
+
+.hours-info strong {
+  display: block;
+  margin-bottom: 10px;
+  color: #495057;
+}
+
+.hours-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.hour-tag {
+  background: #e9ecef;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 4px 8px;
+  text-align: center;
+  font-size: 12px;
+  font-family: monospace;
+  color: #495057;
+}
+
+/* Botões de tema */
+.theme-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+.theme-button {
+  padding: 10px 15px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.theme-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.theme-button.active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+/* Tempo dos agendamentos */
+.appointment-time {
+  color: #007bff;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.appointment-data {
+  margin-top: 8px;
+  padding: 8px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #666;
+  font-family: monospace;
+}
+
 /* Seção de status */
 .status-section {
   background: #e8f5e8;
