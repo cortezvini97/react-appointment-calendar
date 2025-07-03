@@ -28,7 +28,7 @@ export const Calendar: React.FC<CalendarProps> = ({  currentDate = new Date(),
   maxAppointmentsPerDay = 3,
   blockDay = true,
   hours,
-  tolerance = 0,
+  minTime = 0,
   holidays = null,
   allowHolidayBooking = false,
   enableChristianHolidays = true,
@@ -170,9 +170,9 @@ export const Calendar: React.FC<CalendarProps> = ({  currentDate = new Date(),
       allowChristianHolidayBooking,
       blockDay,
       hours,
-      tolerance
+      minTime
     );
-  }, [selectedDate, appointments, effectiveMaxAppointments, enableSaturday, enableSunday, workingHours, workingHoursCurrentDayOnly, holidays, allowHolidayBooking, disabledDates, christianHolidays, allowChristianHolidayBooking, blockDay, hours, tolerance]);const handleDayClick = (day: CalendarDay) => {
+  }, [selectedDate, appointments, effectiveMaxAppointments, enableSaturday, enableSunday, workingHours, workingHoursCurrentDayOnly, holidays, allowHolidayBooking, disabledDates, christianHolidays, allowChristianHolidayBooking, blockDay, hours, minTime]);const handleDayClick = (day: CalendarDay) => {
     if (day.isDisabled) return;
 
     // Verificar se deve bloquear agendamento baseado no horário de funcionamento
@@ -327,9 +327,9 @@ export const Calendar: React.FC<CalendarProps> = ({  currentDate = new Date(),
     if (showAvailableSlots && !day.isDisabled && !day.isPast) {
       let availableSlots: number;
       
-      if (hours && hours.length > 0 && tolerance !== undefined) {
+      if (hours && hours.length > 0 && minTime !== undefined) {
         // Calcular vagas baseado nos horários disponíveis
-        availableSlots = calculateMaxAppointmentsFromHours(hours, day.appointments, tolerance, day.date);
+        availableSlots = calculateMaxAppointmentsFromHours(hours, day.appointments, minTime, day.date);
       } else {
         // Usar lógica tradicional
         availableSlots = maxAppointmentsPerDay - day.appointments.length;
@@ -346,8 +346,8 @@ export const Calendar: React.FC<CalendarProps> = ({  currentDate = new Date(),
       } else {
         // Verificar se é por limite de agendamentos (dinâmico ou fixo)
         let maxForDay: number;
-        if (hours && hours.length > 0 && tolerance !== undefined) {
-          maxForDay = calculateMaxAppointmentsFromHours(hours, [], tolerance, day.date);
+        if (hours && hours.length > 0 && minTime !== undefined) {
+          maxForDay = calculateMaxAppointmentsFromHours(hours, [], minTime, day.date);
         } else {
           maxForDay = maxAppointmentsPerDay;
         }
@@ -445,7 +445,7 @@ export const Calendar: React.FC<CalendarProps> = ({  currentDate = new Date(),
           showExistingEvents={showExistingEvents}
           args={args}
           hours={hours}
-          tolerance={tolerance}
+          minTime={minTime}
         />
       )}
 

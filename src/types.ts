@@ -65,9 +65,9 @@ export interface CalendarProps {  /**
   
   /**
    * Tolerância em minutos para conflito de horários (padrão: 0)
-   * Ex: tolerance=30 com horário "08:00" bloqueia agendamentos de 07:30 às 08:30
+   * Ex: minTime=30 com horário "08:00" bloqueia agendamentos de 07:30 às 08:30
    */
-  tolerance?: number;
+  minTime?: number;
   
   /**
    * Bloqueia o dia quando excede maxAppointmentsPerDay (padrão: true)
@@ -205,5 +205,5 @@ export interface ModalProps {
   showExistingEvents?: boolean;
   args?: any;
   hours?: string[];
-  tolerance?: number;
+  minTime?: number;
 }

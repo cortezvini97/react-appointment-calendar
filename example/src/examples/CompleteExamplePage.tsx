@@ -79,7 +79,7 @@ export const CompleteExamplePage: React.FC = () => {  // Estados para todos os p
     "11:00", "11:30", "14:00", "14:30", "15:00", "15:30",
     "16:00", "16:30", "17:00", "17:30"
   ]);
-  const [tolerance, setTolerance] = useState(30);
+  const [minTime, setMinTime] = useState(30);
 
   // Tema
   const [selectedTheme, setSelectedTheme] = useState<'default' | 'purple' | 'blue' | 'green' | 'red' | 'dark'>('default');
@@ -417,8 +417,8 @@ export const CompleteExamplePage: React.FC = () => {  // Estados para todos os p
                 <label>
                   <strong>Tolerância (minutos):</strong>
                   <select 
-                    value={tolerance} 
-                    onChange={(e) => setTolerance(Number(e.target.value))}
+                    value={minTime} 
+                    onChange={(e) => setMinTime(Number(e.target.value))}
                   >
                     <option value={15}>15 minutos</option>
                     <option value={30}>30 minutos</option>
@@ -437,7 +437,7 @@ export const CompleteExamplePage: React.FC = () => {  // Estados para todos os p
                     <span key={index} className="hour-tag">{hour}</span>
                   ))}
                 </div>
-                <small>Total: {specificHours.length} horários • Tolerância: {tolerance} min</small>
+                <small>Total: {specificHours.length} horários • Tolerância: {minTime} min</small>
               </div>
             </>
           )}
@@ -470,7 +470,7 @@ export const CompleteExamplePage: React.FC = () => {  // Estados para todos os p
           <div><strong>Modo:</strong> {useSpecificHours ? 'Horários específicos' : 'Tradicional'}</div>
           {useSpecificHours && (
             <>
-              <div><strong>Tolerância:</strong> {tolerance} min</div>
+              <div><strong>Tolerância:</strong> {minTime} min</div>
               <div><strong>Horários:</strong> {specificHours.length} disponíveis</div>
             </>
           )}
@@ -489,7 +489,7 @@ export const CompleteExamplePage: React.FC = () => {  // Estados para todos os p
           appointments={appointments}
           maxAppointmentsPerDay={maxAppointmentsPerDay}
           blockDay={blockDay}
-          {...(useSpecificHours && { hours: specificHours, tolerance })}
+          {...(useSpecificHours && { hours: specificHours, minTime })}
           holidays={holidays}
           allowHolidayBooking={allowHolidayBooking}
           enableChristianHolidays={enableChristianHolidays}

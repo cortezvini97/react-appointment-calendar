@@ -86,7 +86,7 @@ export default App;
 | `appointments` | `Appointment[]` | `[]` | Lista de agendamentos |
 | `maxAppointmentsPerDay` | `number` | `3` | Máximo de agendamentos por dia |
 | `hours` | `string[]` | - | Horários específicos disponíveis para agendamento (formato: ["08:00", "09:00", "10:00"]) |
-| `tolerance` | `number` | `0` | Tolerância em minutos para conflito de horários |
+| `minTime` | `number` | `0` | Tolerância em minutos para conflito de horários |
 | `blockDay` | `boolean` | `true` | Bloqueia o dia quando excede maxAppointmentsPerDay |
 | `holidays` | `Holiday[] \| null` | `null` | Lista de feriados |
 | `allowHolidayBooking` | `boolean` | `false` | Permite agendamentos em feriados |
@@ -253,7 +253,7 @@ function AdvancedCalendar() {
     <Calendar
       appointments={appointments}
       hours={businessHours}              // Horários específicos
-      tolerance={30}                     // 30 minutos de tolerância
+      minTime={30}                     // 30 minutos de tolerância
       holidays={holidays}                // Feriados personalizados
       allowHolidayBooking={false}        // Bloquear feriados
       enableChristianHolidays={true}     // Feriados automáticos
@@ -364,7 +364,7 @@ Nova funcionalidade que permite definir horários específicos disponíveis para
 <Calendar
   appointments={appointments}
   hours={["08:00", "08:30", "09:00", "14:00", "14:30", "15:00"]}
-  tolerance={30} // 30 minutos de tolerância
+  minTime={30} // 30 minutos de tolerância
   onSubmit={handleSubmit}
 />
 ```
@@ -393,7 +393,7 @@ function SpecificHoursCalendar() {
     <Calendar
       appointments={appointments}
       hours={availableHours}
-      tolerance={30} // 30 minutos entre consultas
+      minTime={30} // 30 minutos entre consultas
       onSubmit={(data, date) => {
         const newAppointment = {
           id: Date.now().toString(),
@@ -600,7 +600,7 @@ interface CalendarProps {
   appointments?: Appointment[];
   maxAppointmentsPerDay?: number;
   hours?: string[];
-  tolerance?: number;
+  minTime?: number;
   blockDay?: boolean;
   holidays?: Holiday[] | null;
   allowHolidayBooking?: boolean;

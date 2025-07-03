@@ -73,7 +73,7 @@ const SpecificHoursExample: React.FC = () => {
       <Calendar
         appointments={appointments}
         hours={availableHours}
-        tolerance={30} // 30 minutos de tolerância
+        minTime={30} // 30 minutos de tolerância
         onSubmit={handleSubmit}
         enableSaturday={true}
         enableSunday={false}

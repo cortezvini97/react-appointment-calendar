@@ -152,7 +152,7 @@ export const generateCalendarDays = (
   allowChristianHolidayBooking?: boolean,
   blockDay?: boolean,
   hours?: string[],
-  tolerance?: number
+  minTime?: number
 ): CalendarDay[] => {
   const days: CalendarDay[] = [];
   const firstDay = getFirstDayOfCalendar(currentDate);
@@ -169,9 +169,9 @@ export const generateCalendarDays = (
     let effectiveMaxAppointments = maxAppointmentsPerDay;
     let isMaxReached = false;
     
-    if (hours && hours.length > 0 && tolerance !== undefined) {
+    if (hours && hours.length > 0 && minTime !== undefined) {
       // Para horários específicos, verificar quantos horários ainda estão disponíveis
-      const availableSlots = calculateMaxAppointmentsFromHours(hours, dayAppointments, tolerance, currentDay);
+      const availableSlots = calculateMaxAppointmentsFromHours(hours, dayAppointments, minTime, currentDay);
       isMaxReached = availableSlots <= 0;
       effectiveMaxAppointments = hours.length; // Valor nominal para compatibilidade
     } else {
@@ -345,10 +345,10 @@ export const minutesToTime = (minutes: number): string => {
 /**
  * Verifica se dois horários conflitam baseado na tolerância
  */
-export const timesConflict = (time1: string, time2: string, tolerance: number): boolean => {
+export const timesConflict = (time1: string, time2: string, minTime: number): boolean => {
   const minutes1 = timeToMinutes(time1);
   const minutes2 = timeToMinutes(time2);
-  return Math.abs(minutes1 - minutes2) < tolerance;
+  return Math.abs(minutes1 - minutes2) < minTime;
 };
 
 /**
@@ -357,7 +357,7 @@ export const timesConflict = (time1: string, time2: string, tolerance: number): 
 export const getAvailableTimeSlots = (
   allHours: string[],
   existingAppointments: Appointment[],
-  tolerance: number = 0,
+  minTime: number = 0,
   selectedDate?: Date
 ): { time: string; isAvailable: boolean; conflictsWith?: string[]; isPast?: boolean }[] => {
   const existingTimes = existingAppointments
@@ -369,7 +369,7 @@ export const getAvailableTimeSlots = (
 
   return allHours.map(hour => {
     const conflicts = existingTimes.filter(existingTime => 
-      timesConflict(hour, existingTime, tolerance)
+      timesConflict(hour, existingTime, minTime)
     );
     
     // Verifica se o horário já passou (apenas para o dia atual)
@@ -383,8 +383,8 @@ export const getAvailableTimeSlots = (
       isPast = hourMinutes <= currentMinutes;
       
       // Verifica se o horário está muito próximo do atual (considerando tolerância)
-      if (tolerance > 0 && !isPast) {
-        isTooClose = (hourMinutes - currentMinutes) < tolerance;
+      if (minTime > 0 && !isPast) {
+        isTooClose = (hourMinutes - currentMinutes) < minTime;
       }
     }
     
@@ -403,10 +403,10 @@ export const getAvailableTimeSlots = (
 export const calculateMaxAppointmentsFromHours = (
   hours: string[],
   existingAppointments: Appointment[],
-  tolerance: number = 0,
+  minTime: number = 0,
   selectedDate?: Date
 ): number => {
-  const availableSlots = getAvailableTimeSlots(hours, existingAppointments, tolerance, selectedDate);
+  const availableSlots = getAvailableTimeSlots(hours, existingAppointments, minTime, selectedDate);
   return availableSlots.filter(slot => slot.isAvailable).length;
 };
 
@@ -417,7 +417,7 @@ export const isTimeSlotAvailable = (
   requestedTime: string,
   hours: string[],
   existingAppointments: Appointment[],
-  tolerance: number = 0
+  minTime: number = 0
 ): boolean => {
   // Verifica se o horário está na lista de horários disponíveis
   if (!hours.includes(requestedTime)) {
@@ -430,7 +430,7 @@ export const isTimeSlotAvailable = (
     .filter(time => time !== undefined) as string[];
 
   return !existingTimes.some(existingTime => 
-    timesConflict(requestedTime, existingTime, tolerance)
+    timesConflict(requestedTime, existingTime, minTime)
   );
 };
 

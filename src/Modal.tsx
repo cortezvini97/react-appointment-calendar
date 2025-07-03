@@ -8,9 +8,9 @@ const DefaultForm: React.FC<{
   onSubmit: (data: any) => void;
   onCancel: () => void;
   hours?: string[];
-  tolerance?: number;
+  minTime?: number;
   appointments?: any[];
-}> = ({ date, onSubmit, onCancel, hours, tolerance = 0, appointments = [] }) => {
+}> = ({ date, onSubmit, onCancel, hours, minTime = 0, appointments = [] }) => {
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
   const [selectedTime, setSelectedTime] = React.useState('');
@@ -21,7 +21,7 @@ const DefaultForm: React.FC<{
       return null;
     }
     
-    const timeSlots = getAvailableTimeSlots(hours, appointments, tolerance, date);
+    const timeSlots = getAvailableTimeSlots(hours, appointments, minTime, date);
     const availableSlots = timeSlots.filter(slot => slot.isAvailable);
     const pastSlots = timeSlots.filter(slot => slot.isPast);
     const conflictSlots = timeSlots.filter(slot => slot.conflictsWith && slot.conflictsWith.length > 0);
@@ -32,7 +32,7 @@ const DefaultForm: React.FC<{
       conflicts: conflictSlots.length,
       total: timeSlots.length
     };
-  }, [hours, appointments, tolerance, date]);
+  }, [hours, appointments, minTime, date]);
 
   const availableTimeSlots = timeSlotInfo?.available || null;
 
@@ -104,7 +104,7 @@ const DefaultForm: React.FC<{
                     Total de horários: {timeSlotInfo.total} | 
                     {timeSlotInfo.past > 0 && ` Já passaram: ${timeSlotInfo.past} |`}
                     {timeSlotInfo.conflicts > 0 && ` Conflitos: ${timeSlotInfo.conflicts} |`}
-                    {tolerance > 0 && ` Tolerância: ${tolerance} minutos`}
+                    {minTime > 0 && ` Tolerância: ${minTime} minutos`}
                   </>
                 )}
               </small>
@@ -139,7 +139,7 @@ export const Modal: React.FC<ModalProps> = ({
   showExistingEvents = true,
   args,
   hours,
-  tolerance
+  minTime
 }) => {
   React.useEffect(() => {
     if (isOpen) {
@@ -224,7 +224,7 @@ export const Modal: React.FC<ModalProps> = ({
                 onSubmit={onSubmit} 
                 onCancel={onClose} 
                 hours={hours}
-                tolerance={tolerance}
+                minTime={minTime}
                 appointments={appointments}
               />
             )}
