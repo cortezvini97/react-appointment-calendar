@@ -17,6 +17,8 @@ import DisabledDatesExample from "./examples/DisabledDatesExample";
 import DisabledDatesLabelTest from "./examples/DisabledDatesLabelTest";
 import WorkingHoursExample from "./examples/WorkingHoursExample";
 import SpecificHoursExample from "./examples/SpecificHoursExample";
+import IAAppointmentExample from "./examples/IAAppointmentExample";
+import NoCallbackExample from "./examples/NoCallbackExample";
 import PreviousMonthsExample from "./examples/PreviousMonthsExample";
 import ShowExistingEventsExample from "./examples/ShowExistingEventsExample";
 import PreviousButtonControlExample from "./examples/PreviousButtonControlExample";
@@ -51,6 +53,8 @@ const App = () => {
           <Route path="disabled-dates-label" element={<DisabledDatesLabelTest />} />          
           <Route path="working-hours" element={<WorkingHoursExample />} />
           <Route path="specific-hours" element={<SpecificHoursExample />} />
+          <Route path="ia-appointment" element={<IAAppointmentExample />} />
+          <Route path="no-callback-error" element={<NoCallbackExample />} />
           <Route path="previous-months" element={<PreviousMonthsExample />} />
           <Route path="show-existing-events" element={<ShowExistingEventsExample />} />          
           <Route path="previous-button-control" element={<PreviousButtonControlExample />} />          

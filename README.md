@@ -1,6 +1,6 @@
 # React Appointment Calendar
 
-Uma biblioteca de calendário para agendamento em React.js com funcionalidades avançadas e totalmente customizável.
+Uma biblioteca de calendário para agendamento em React.js com funcionalidades avançadas, **IA integrada** e totalmente customizável.
 
 ## 📚 Documentação Completa
 
@@ -13,6 +13,9 @@ Uma biblioteca de calendário para agendamento em React.js com funcionalidades a
 
 ## ✨ Funcionalidades
 
+- ✅ **Agendamento Inteligente com IA**: Chat bot integrado para agendamentos em linguagem natural
+- ✅ **Extração Automática**: IA identifica datas, horários e assuntos automaticamente
+- ✅ **Callback Customizado**: Sistema de IA personalizável com `onIACallback`
 - ✅ **Bloqueio de dias passados**: Dias passados não podem ser selecionados
 - ✅ **Controle de agendamentos**: Limite máximo de agendamentos por dia
 - ✅ **Horários específicos**: Defina horários exatos disponíveis para agendamento
@@ -78,6 +81,70 @@ function App() {
 export default App;
 ```
 
+## 🤖 Uso com IA (Recomendado)
+
+```tsx
+import React, { useState } from 'react';
+import Calendar, { Appointment, IAResponse } from 'react-appointment-calendar';
+
+function AppWithAI() {
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+
+  const handleSubmit = (data: any, date: Date) => {
+    const newAppointment: Appointment = {
+      id: Date.now().toString(),
+      title: data.title,
+      date: date,
+      time: data.time,
+      data: data
+    };
+    setAppointments([...appointments, newAppointment]);
+  };
+
+  const handleIAExtraction = (iaAppointment: any) => {
+    // Auto-criar agendamentos com alta confiança
+    if (iaAppointment.confidence > 0.8) {
+      const newAppointment: Appointment = {
+        id: Date.now().toString(),
+        title: iaAppointment.title,
+        date: iaAppointment.date,
+        time: iaAppointment.time,
+        data: {
+          source: 'ia-extraction',
+          confidence: iaAppointment.confidence,
+          auto_created: true
+        }
+      };
+      setAppointments([...appointments, newAppointment]);
+    }
+  };
+
+  const handleCustomIA = (prompt: string) => {
+    // Personalizar respostas da IA
+    if (prompt.toLowerCase().includes('urgente')) {
+      return '🚨 Situação urgente! Entre em contato: (11) 99999-9999';
+    }
+    return null; // Usar sistema padrão
+  };
+
+  return (
+    <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
+      <Calendar
+        appointments={appointments}
+        onSubmit={handleSubmit}
+        IAResource={true} // 🤖 Habilita IA
+        onIAAppointmentExtracted={handleIAExtraction}
+        onIACallback={handleCustomIA}
+        hours={["08:00", "09:00", "10:00", "14:00", "15:00"]}
+        minTime={30}
+      />
+    </div>
+  );
+}
+
+export default AppWithAI;
+```
+
 ## 🛠️ Props
 
 | Prop | Tipo | Padrão | Descrição |
@@ -104,6 +171,9 @@ export default App;
 | `showExistingEvents` | `boolean` | `true` | Exibir eventos existentes no modal |
 | `workingHours` | `string \| null` | `null` | Horário de funcionamento (formato: "HH:mm-HH:mm") |
 | `workingHoursCurrentDayOnly` | `boolean` | `false` | Bloqueia horário de funcionamento apenas no dia atual |
+| `IAResource` | `boolean` | `false` | Habilita o assistente de IA para agendamento inteligente |
+| `onIAAppointmentExtracted` | `function` | - | Callback quando a IA extrai um agendamento da conversa |
+| `onIACallback` | `function` | - | Callback customizado para processar prompts da IA |
 | `onDayClick` | `(date: Date, appointments: Appointment[]) => void` | - | Callback ao clicar em um dia |
 | `onSubmit` | `(data: any, date: Date, event?: React.FormEvent) => void` | - | Callback ao submeter o formulário |
 | `renderForm` | `(date: Date, onSubmit: (data: any, event?: React.FormEvent) => void, onCancel: () => void, args?: any) => React.ReactNode` | - | Renderizar formulário customizado |
@@ -249,6 +319,44 @@ function AdvancedCalendar() {
     "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"
   ];
 
+  const handleIAExtraction = (iaAppointment: any) => {
+    if (iaAppointment.confidence > 0.8) {
+      const newAppointment: Appointment = {
+        id: Date.now().toString(),
+        title: iaAppointment.title,
+        date: iaAppointment.date,
+        time: iaAppointment.time,
+        data: {
+          source: 'ia-extraction',
+          confidence: iaAppointment.confidence,
+          auto_created: true
+        }
+      };
+      setAppointments([...appointments, newAppointment]);
+      alert(`✅ Agendamento criado automaticamente! Confiança: ${Math.round(iaAppointment.confidence * 100)}%`);
+    }
+  };
+
+  const handleCustomIA = (prompt: string) => {
+    // Detectar emergências
+    if (prompt.toLowerCase().includes('emergência') || prompt.toLowerCase().includes('urgente')) {
+      return {
+        message: '🚨 Situação urgente detectada!\n\nPara emergências:\n📞 (11) 99999-9999\n⚡ WhatsApp: (11) 88888-8888',
+        suggestedActions: ['Ligar emergência', 'WhatsApp urgente', 'Continuar agendamento']
+      };
+    }
+    
+    // Detectar consultas médicas
+    if (prompt.toLowerCase().includes('consulta') || prompt.toLowerCase().includes('médico')) {
+      return {
+        message: '🏥 Consulta médica identificada!\n\nRecomendações:\n• Chegar 15 minutos antes\n• Levar documentos\n• Verificar encaixe\n\nMe diga quando gostaria de agendar!',
+        suggestedActions: ['Verificar encaixe', 'Agendar consulta', 'Ver especialidades']
+      };
+    }
+    
+    return null; // Usar sistema padrão para outros casos
+  };
+
   return (
     <Calendar
       appointments={appointments}
@@ -270,6 +378,9 @@ function AdvancedCalendar() {
       workingHours="08:00-18:00"         // Horário de funcionamento
       workingHoursCurrentDayOnly={true}  // Só validar hoje
       blockDay={true}                    // Bloquear dias lotados
+      IAResource={true}                  // 🤖 Habilitar IA
+      onIAAppointmentExtracted={handleIAExtraction} // Auto-criação
+      onIACallback={handleCustomIA}      // IA personalizada
       themeColors={{                     // Cores personalizadas
         color_header_top: '#007bff',
         color_header_bottom: '#0056b3',
@@ -353,6 +464,204 @@ function BusinessHoursCalendar() {
 // "22:00-06:00" - Horário noturno (atravessa meia-noite)
 // null ou "" - Sem restrições de horário
 ```
+
+## 🤖 Agendamento Inteligente com IA
+
+A biblioteca inclui um sistema avançado de IA que permite criar agendamentos usando linguagem natural através de um chat bot integrado.
+
+### ✨ Funcionalidades da IA
+
+- **🗣️ Linguagem Natural**: Crie agendamentos falando normalmente
+- **📅 Extração Automática**: Identifica datas, horários e assuntos automaticamente  
+- **🎯 Sistema de Confiança**: Avalia a certeza da extração (0-100%)
+- **⚡ Criação Automática**: Agendamentos com alta confiança são criados automaticamente
+- **🔧 Callback Customizado**: Personalize respostas e comportamentos da IA
+- **✅ Validação de Conflitos**: Verifica disponibilidade e sugere alternativas
+
+### 🚀 Como Habilitar
+
+```tsx
+<Calendar
+  appointments={appointments}
+  IAResource={true} // Habilita o assistente IA
+  onIAAppointmentExtracted={handleIAExtraction}
+  onIACallback={handleCustomIA}
+  onSubmit={handleSubmit}
+/>
+```
+
+### 💬 Exemplos de Comandos
+
+Os usuários podem usar linguagem natural como:
+
+- "Quero agendar uma reunião na próxima segunda às 15h"
+- "Preciso marcar uma consulta médica para amanhã de manhã"  
+- "Agendar compromisso com cliente dia 28 às 16:30"
+- "Marcar dentista para sexta-feira à tarde"
+
+### 🔧 Callback Customizado (onIACallback)
+
+Personalize completamente o comportamento da IA:
+
+```tsx
+const handleCustomIA = (prompt: string) => {
+  // Exemplo 1: Detectar emergências
+  if (prompt.toLowerCase().includes('emergência')) {
+    return {
+      message: '🚨 Situação urgente detectada! Entre em contato: (11) 99999-9999',
+      suggestedActions: ['Ligar emergência', 'WhatsApp urgente']
+    };
+  }
+  
+  // Exemplo 2: Saudações personalizadas
+  if (prompt.toLowerCase().includes('olá')) {
+    const saudacoes = [
+      '👋 Olá! Como posso ajudar com seus agendamentos?',
+      '🌟 Oi! Pronto para organizar sua agenda?',
+      '😊 Olá! Sou seu assistente pessoal de agendamentos!'
+    ];
+    return saudacoes[Math.floor(Math.random() * saudacoes.length)];
+  }
+  
+  // Para outros casos, usar sistema padrão
+  return null;
+};
+```
+
+### 📊 Extração Automática de Agendamentos
+
+Configure o callback para quando a IA extrair um agendamento:
+
+```tsx
+const handleIAExtraction = (iaAppointment) => {
+  console.log('IA extraiu:', iaAppointment);
+  
+  // Auto-criar se confiança alta
+  if (iaAppointment.confidence > 0.8) {
+    const newAppointment = {
+      id: Date.now().toString(),
+      title: iaAppointment.title,
+      date: iaAppointment.date,
+      time: iaAppointment.time,
+      data: {
+        source: 'ia-extraction',
+        confidence: iaAppointment.confidence,
+        auto_created: true
+      }
+    };
+    
+    setAppointments(prev => [...prev, newAppointment]);
+    alert(`✅ Agendamento criado automaticamente! Confiança: ${Math.round(iaAppointment.confidence * 100)}%`);
+  }
+};
+```
+
+### 🎯 Exemplo Completo com IA
+
+```tsx
+import React, { useState } from 'react';
+import Calendar, { Appointment, IAResponse } from 'react-appointment-calendar';
+
+function AICalendarExample() {
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+
+  const handleSubmit = (data: any, date: Date) => {
+    const newAppointment: Appointment = {
+      id: Date.now().toString(),
+      title: data.title,
+      date: date,
+      time: data.time,
+      data: data
+    };
+    setAppointments([...appointments, newAppointment]);
+  };
+
+  const handleIAExtraction = (iaAppointment: any) => {
+    if (iaAppointment.confidence > 0.8) {
+      const newAppointment: Appointment = {
+        id: Date.now().toString(),
+        title: iaAppointment.title,
+        date: iaAppointment.date,
+        time: iaAppointment.time,
+        data: {
+          source: 'ia-extraction',
+          confidence: iaAppointment.confidence,
+          auto_created: true
+        }
+      };
+      setAppointments(prev => [...prev, newAppointment]);
+    }
+  };
+
+  const handleCustomIA = (prompt: string) => {
+    // Detectar consultas médicas
+    if (prompt.toLowerCase().includes('consulta') || prompt.toLowerCase().includes('médico')) {
+      return {
+        message: '🏥 Consulta médica identificada!\n\nRecomendações:\n• Chegar 15 minutos antes\n• Levar documentos\n• Verificar se tem encaixe hoje\n\nMe diga quando gostaria de agendar!',
+        suggestedActions: ['Verificar encaixe', 'Agendar consulta', 'Ver especialidades']
+      };
+    }
+    
+    return null; // Usar sistema padrão
+  };
+
+  return (
+    <Calendar
+      appointments={appointments}
+      hours={["08:00", "08:30", "09:00", "14:00", "14:30", "15:00"]}
+      minTime={30}
+      IAResource={true}
+      onSubmit={handleSubmit}
+      onIAAppointmentExtracted={handleIAExtraction}
+      onIACallback={handleCustomIA}
+      themeColors={{
+        color_header_top: '#10b981',
+        color_header_bottom: '#059669',
+        color_font_header: '#ffffff'
+      }}
+    />
+  );
+}
+```
+
+### ⚠️ Validação de Callback
+
+Se você habilitar `IAResource={true}` mas não fornecer `onIACallback`, o sistema exibirá uma mensagem educativa explicando como configurar corretamente:
+
+```tsx
+// ❌ Isso gerará um aviso educativo
+<Calendar IAResource={true} />
+
+// ✅ Configuração correta
+<Calendar 
+  IAResource={true}
+  onIACallback={handleCustomIA}
+/>
+```
+
+### 🔍 Troubleshooting IA
+
+#### Problema: Chat bot não aparece
+- **Causa**: `IAResource` não está habilitado
+- **Solução**: Adicione `IAResource={true}` nas props do Calendar
+
+#### Problema: Mensagem de erro sobre callback
+- **Causa**: `IAResource={true}` sem `onIACallback` configurado  
+- **Solução**: Adicione o callback: `onIACallback={handleCustomIA}`
+
+#### Problema: IA não extrai agendamentos
+- **Causa**: Linguagem muito informal ou ambígua
+- **Solução**: Use comandos mais específicos como "agendar reunião segunda 15h"
+
+#### Problema: Confiança sempre baixa
+- **Causa**: Falta de contexto temporal ou detalhes
+- **Solução**: Inclua data, horário e descrição: "consulta médica amanhã às 14h"
+
+#### Dicas para Melhor Performance:
+- ✅ Seja específico: "reunião segunda 15h" > "encontro qualquer hora"
+- ✅ Use datas relativas: "amanhã", "próxima segunda" 
+- ✅ Inclua horários: "às 14h30", "de manhã", "à tarde"
+- ✅ Mencione o assunto: "consulta", "reunião", "compromisso"
 
 ## ⏰ Horários Específicos com Tolerância
 
@@ -579,6 +888,25 @@ interface TimeSlot {
   conflictsWith?: string[]; // Horários que conflitam devido à tolerância
 }
 
+interface ChatMessage {
+  id: string;
+  message: string;
+  isUser: boolean;
+  timestamp: Date;
+  appointment?: Appointment; // Agendamento extraído da mensagem (se houver)
+}
+
+interface IAResponse {
+  message: string;
+  extractedAppointment?: {
+    title: string;
+    date: Date;
+    time?: string;
+    confidence: number; // 0-1
+  };
+  suggestedActions?: string[];
+}
+
 interface Holiday {
   label: string;
   date: string; // formato: "DD/MM"
@@ -618,6 +946,18 @@ interface CalendarProps {
   showExistingEvents?: boolean;
   workingHours?: string | null;
   workingHoursCurrentDayOnly?: boolean;
+  
+  // 🤖 Props de IA
+  IAResource?: boolean;
+  onIAAppointmentExtracted?: (appointment: {
+    title: string;
+    date: Date;
+    time?: string;
+    confidence: number;
+  }) => void;
+  onIACallback?: (prompt: string) => string | IAResponse | Promise<string | IAResponse> | null | undefined | void;
+  
+  // Callbacks principais
   onDayClick?: (date: Date, appointments: Appointment[]) => void;
   onSubmit?: (data: any, date: Date, event?: React.FormEvent) => void;
   renderForm?: (date: Date, onSubmit: (data: any, event?: React.FormEvent) => void, onCancel: () => void, args?: any) => React.ReactNode;
@@ -631,7 +971,10 @@ interface CalendarProps {
 ## 🌟 Recursos
 
 - **Zero dependências externas** (exceto React)
-- **Bundle pequeno** (~15KB gzipped)
+- **Bundle pequeno** (~20KB gzipped)
+- **IA integrada** para agendamentos inteligentes
+- **Chat bot conversacional** com linguagem natural
+- **Sistema de callbacks customizáveis** para IA
 - **Acessibilidade completa** (WCAG 2.1)
 - **Suporte a teclado** (navegação e atalhos)
 - **Internacionalização** (pt-BR por padrão)

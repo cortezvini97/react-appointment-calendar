@@ -208,6 +208,78 @@
   font-family: monospace;
 }
 
+/* Seção IA */
+.ia-section {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 1px solid #bae6fd;
+}
+
+.ia-info {
+  margin-top: 15px;
+  padding: 15px;
+  background: white;
+  border: 1px solid #bae6fd;
+  border-radius: 6px;
+}
+
+.ia-info strong {
+  display: block;
+  margin-bottom: 10px;
+  color: #0c4a6e;
+}
+
+.ia-info ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #0f172a;
+}
+
+.ia-info li {
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.appointment-data {
+  margin-top: 8px;
+  padding: 8px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #666;
+  font-family: monospace;
+}
+
+/* IA Section */
+.ia-section {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 1px solid #0ea5e9;
+}
+
+.ia-info {
+  margin-top: 15px;
+  padding: 15px;
+  background: white;
+  border: 1px solid #bae6fd;
+  border-radius: 6px;
+}
+
+.ia-info strong {
+  display: block;
+  margin-bottom: 10px;
+  color: #0c4a6e;
+}
+
+.ia-info ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.ia-info li {
+  margin-bottom: 4px;
+  font-size: 13px;
+  color: #0369a1;
+}
+
 /* Seção de status */
 .status-section {
   background: #e8f5e8;

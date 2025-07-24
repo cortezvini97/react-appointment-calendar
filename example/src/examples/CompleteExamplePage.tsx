@@ -84,6 +84,9 @@ export const CompleteExamplePage: React.FC = () => {  // Estados para todos os p
   // Tema
   const [selectedTheme, setSelectedTheme] = useState<'default' | 'purple' | 'blue' | 'green' | 'red' | 'dark'>('default');
 
+  // IA Resource
+  const [enableIA, setEnableIA] = useState(false);
+
   const getThemeColors = (): ThemeColor => {
     switch (selectedTheme) {
       case 'purple':
@@ -137,6 +140,32 @@ export const CompleteExamplePage: React.FC = () => {  // Estados para todos os p
     };
     
     setAppointments(prev => [...prev, newAppointment]);
+  };
+
+  const handleIAAppointmentExtracted = (iaAppointment: {
+    title: string;
+    date: Date;
+    time?: string;
+    confidence: number;
+  }) => {
+    console.log('IA extraiu agendamento:', iaAppointment);
+    
+    // Auto-criar agendamento se a confiança for alta
+    if (iaAppointment.confidence > 0.8) {
+      const newAppointment: Appointment = {
+        id: Date.now().toString(),
+        title: iaAppointment.title,
+        date: iaAppointment.date,
+        time: iaAppointment.time,
+        data: {
+          source: 'ia-extraction',
+          confidence: iaAppointment.confidence,
+          auto_created: true
+        }
+      };
+
+      setAppointments(prev => [...prev, newAppointment]);
+    }
   };
 
   const handleDayClick = (date: Date, dayAppointments: Appointment[]) => {
@@ -459,6 +488,35 @@ export const CompleteExamplePage: React.FC = () => {  // Estados para todos os p
             ))}
           </div>
         </div>
+
+        {/* Assistente IA */}
+        <div className="control-section ia-section">
+          <h3>🤖 Assistente IA</h3>
+          
+          <div className="control-item">
+            <label>
+              <input 
+                type="checkbox" 
+                checked={enableIA} 
+                onChange={(e) => setEnableIA(e.target.checked)}
+              />
+              <span>Habilitar Agendamento Inteligente</span>
+            </label>
+            <small>Chat bot com IA para criar agendamentos usando linguagem natural</small>
+          </div>
+
+          {enableIA && (
+            <div className="ia-info">
+              <strong>🚀 Recursos da IA:</strong>
+              <ul>
+                <li>Extração automática de datas e horários</li>
+                <li>Validação de conflitos em tempo real</li>
+                <li>Criação automática de agendamentos</li>
+                <li>Sugestões de horários alternativos</li>
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Informações do Estado Atual */}
@@ -479,6 +537,7 @@ export const CompleteExamplePage: React.FC = () => {  // Estados para todos os p
           <div><strong>Horário:</strong> {workingHours || 'Sem restrição'}</div>
           <div><strong>Sábados:</strong> {enableSaturday ? 'Habilitado' : 'Desabilitado'}</div>
           <div><strong>Domingos:</strong> {enableSunday ? 'Habilitado' : 'Desabilitado'}</div>
+          <div><strong>IA:</strong> {enableIA ? 'Habilitada' : 'Desabilitada'}</div>
         </div>
       </div>
 
@@ -507,6 +566,8 @@ export const CompleteExamplePage: React.FC = () => {  // Estados para todos os p
           workingHours={workingHours}
           workingHoursCurrentDayOnly={workingHoursCurrentDayOnly}
           themeColors={getThemeColors()}
+          IAResource={enableIA}
+          onIAAppointmentExtracted={handleIAAppointmentExtracted}
           onDayClick={handleDayClick}
           onSubmit={handleSubmit}
         />

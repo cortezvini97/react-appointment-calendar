@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Calendar, { Appointment }  from "react-appointment-calendar";
+export { default as IAAppointmentExample } from './IAAppointmentExample';
 //import 'react-appointment-calendar/dist/index.css';
 
 const CalendarExample = () => {

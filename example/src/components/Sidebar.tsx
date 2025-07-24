@@ -88,6 +88,18 @@ const examples: ExampleItem[] = [
     category: 'Configurações'
   },
   {
+    path: '/ia-appointment',
+    name: 'Agendamento com IA',
+    description: 'Chat bot inteligente para criar agendamentos com linguagem natural',
+    category: 'IA & Automação'
+  },
+  {
+    path: '/no-callback-error',
+    name: 'IA sem Callback (Erro)',
+    description: 'Demonstração de erro quando callback não está configurado',
+    category: 'IA & Automação'
+  },
+  {
     path: '/args-example',
     name: 'Args para Formulário',
     description: 'Exemplo passando argumentos para formulário customizado',
@@ -173,14 +185,20 @@ const Sidebar: React.FC = () => {
       <nav className="sidebar-nav">
         {categories.map(category => (
           <div key={category} className="nav-category">
-            {!isCollapsed && <h3 className="category-title">{category}</h3>}
+            {!isCollapsed && (
+              <h3 className={`category-title ${category === 'IA & Automação' ? 'ia-category' : ''}`}>
+                {category}
+              </h3>
+            )}
             {examples
               .filter(ex => ex.category === category)
               .map(example => (
                 <Link
                   key={example.path}
                   to={example.path}
-                  className={`nav-link ${location.pathname === example.path ? 'active' : ''}`}
+                  className={`nav-link ${location.pathname === example.path ? 'active' : ''} ${
+                    example.category === 'IA & Automação' ? 'ia-example' : ''
+                  }`}
                   title={isCollapsed ? `${example.name} - ${example.description}` : undefined}
                 >
                   <span className="nav-link-text">

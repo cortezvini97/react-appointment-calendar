@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { CalendarProps, CalendarDay, Appointment, ThemeColor } from './types';
 import { Modal } from './Modal';
+import { ChatBot } from './ChatBot';
 import HolidayCalculator from './HolidayCalculator';
+import './Calendar.css';
+import './ChatBot.css';
+import './CalendarTheme.css';
 import {
   generateCalendarDays,
   getMonthName,
@@ -20,8 +24,6 @@ import {
   calculateMaxAppointmentsFromHours,
   sortTimes,
 } from './utils';
-import './Calendar.css';
-import './CalendarTheme.css';
 
 export const Calendar: React.FC<CalendarProps> = ({  currentDate = new Date(),
   appointments = [],
@@ -50,6 +52,9 @@ export const Calendar: React.FC<CalendarProps> = ({  currentDate = new Date(),
   style,
   className,
   themeColors = { color_header_top: null, color_header_bottom: null, color_font_header: null },
+  IAResource = false,
+  onIAAppointmentExtracted,
+  onIACallback,
 }) => {// Processa currentDate: converte string para Date se necessário
   // Suporta formatos como "2025-06-01" ou datas criadas com createDate()
   const processedCurrentDate = React.useMemo(() => {
@@ -479,6 +484,17 @@ export const Calendar: React.FC<CalendarProps> = ({  currentDate = new Date(),
           )}
         />
       )}
+      
+      {/* Chat Bot IA */}
+      <ChatBot
+        isEnabled={IAResource}
+        appointments={appointments}
+        hours={hours}
+        minTime={minTime}
+        onAppointmentExtracted={onIAAppointmentExtracted}
+        onIACallback={onIACallback}
+        themeColors={themeColors}
+      />
     </div>
   );
 };

@@ -20,6 +20,25 @@ export interface TimeSlot {
   conflictsWith?: string[]; // Horários que conflitam devido à tolerância
 }
 
+export interface ChatMessage {
+  id: string;
+  message: string;
+  isUser: boolean;
+  timestamp: Date;
+  appointment?: Appointment; // Agendamento extraído da mensagem (se houver)
+}
+
+export interface IAResponse {
+  message: string;
+  extractedAppointment?: {
+    title: string;
+    date: Date;
+    time?: string;
+    confidence: number; // 0-1
+  };
+  suggestedActions?: string[];
+}
+
 export interface Holiday {
   label: string;
   date: string; // formato: "DD/MM"
@@ -193,6 +212,29 @@ export interface CalendarProps {  /**
    * Cores do tema do calendário (padrão: tema claro)
    */
   themeColors?: ThemeColor;
+  
+  /**
+   * Habilita o assistente de IA para agendamento inteligente (padrão: false)
+   * Quando habilitado, exibe uma área de chat abaixo do calendário
+   */
+  IAResource?: boolean;
+  
+  /**
+   * Callback chamado quando a IA extrai um agendamento da conversa
+   */
+  onIAAppointmentExtracted?: (appointment: {
+    title: string;
+    date: Date;
+    time?: string;
+    confidence: number;
+  }) => void;
+  
+  /**
+   * Callback customizado para processar prompts da IA (padrão: usa IA interna)
+   * Recebe o prompt do usuário e deve retornar uma resposta da IA
+   * Se não fornecido, null, undefined ou não retornar valor, usa o sistema padrão
+   */
+  onIACallback?: (prompt: string) => string | IAResponse | Promise<string | IAResponse> | null | undefined | void;
 }
 
 export interface ModalProps {

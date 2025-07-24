@@ -122,6 +122,40 @@
   line-height: 1.2;
 }
 
+/* Estilos específicos para categoria IA */
+.category-title.ia-category {
+  color: #e74c3c;
+  border-bottom-color: rgba(231, 76, 60, 0.3);
+}
+
+.nav-link.ia-example {
+  border-left: 3px solid transparent;
+}
+
+.nav-link.ia-example:hover {
+  background: rgba(231, 76, 60, 0.1);
+  color: white;
+  border-left-color: #e74c3c;
+}
+
+.nav-link.ia-example.active {
+  background: rgba(231, 76, 60, 0.2);
+  color: white;
+  border-left-color: #e74c3c;
+}
+
+.nav-link.ia-example.active::after {
+  background: #e74c3c;
+}
+
+.nav-link.ia-example .nav-link-text {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.nav-link.ia-example .nav-link-description {
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .sidebar.collapsed .nav-link {
   padding: 15px;
   text-align: center;
